@@ -46,15 +46,44 @@ public:
     {
         string line;
         fstream file;
-
+        int maHoaKiTu;
         file.open(p_fileName, ios::in);
-        if(file.is_open())
+        while(1)
         {
-            getline(file, line);
+            // getline(file, maHoaKiTu); không thể dùng như này
+            //  ==> 
+            file >> maHoaKiTu;
+            if(maHoaKiTu == 0)
+            {
+                file.close();
+                return line;
+            }
+            line += (char)giaiMa(maHoaKiTu);
         }
-        file.close();
 
-        return line;
+    }
+    void saveFile(string p_line,const char* p_fileName ) // giam bo nho
+    {
+        fstream file;
+        file.open(p_fileName, ios::out);
+        for(int i=0; i<p_line.length(); i++)
+        {
+            file << maHoa(p_line[i]);
+            file << "\n";
+
+        }
+        file<<"viendeptrai";
+        file.close();
+    }
+    int maHoa (int p_letter)
+    {
+        return p_letter + 1303;
+
+    }
+    int giaiMa(int p_letter)
+    {
+        return p_letter - 1303;
+
     }
 private:
     string matKhau = "admin";
@@ -66,6 +95,9 @@ private:
 
 int main()
 {
-    QuanLyDangNhap QuanLyDangNhapObj;
-    QuanLyDangNhapObj.dangNhap();
+    QuanLyDangNhap app;
+    app.saveFile("HoangVienRatLaDepTrai","passwords.txt");
+    app.saveFile("hoangviendeptrai1303@gmail.com","users.txt");
+    cout<<app.getFile("passwords.txt")<<endl;
+    cout<<app.getFile("users.txt");
 }
