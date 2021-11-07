@@ -4,6 +4,9 @@
 #include <math.h>
 #include "Login.h"
 #include "Display.h"
+#include "srilakshmikanthanp/Figlet.hpp"
+
+using namespace srilakshmikanthanp;
 using namespace std;
 
 Login::Login()
@@ -15,7 +18,9 @@ bool Login::dangNhap()
 {
     bool isLogin;
     system("cls");
-    cout << "-----------DANG NHAP----------------" << endl;
+    Figlet figlet(FigletFont::make("Fonts/Standard.flf"), Smushed::make());
+
+    cout << figlet("Dang nhap");
     cout << "Nhap tai khoan va mat khau.\nTai Khoan:";
     cin >> taiKhoanTmp;
     int userID = checkFile(taiKhoanTmp, "users.txt");
@@ -95,7 +100,10 @@ void Login::saveFile(string p_line, const char *p_fileName) // giam bo nho
 void Login::dangKi()
 {
     string tk, mk;
-    cout << "-----------DANG Ky----------------" << endl;
+    Figlet figlet(FigletFont::make("Fonts/Standard.flf"), Smushed::make());
+
+    cout << figlet("Dang ky");
+
     cout << "Vui long nhap ten tai khoan:\t";
     cin >> tk;
 

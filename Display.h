@@ -22,7 +22,8 @@ void TextColor(int color);
 void gotoxy(int x, int y);
 void ShowConsoleCursor(bool flag);
 
-class Display {
+class Display
+{
 public:
 	void DisplayCursor(int pre_move, int move);
 	void SayGoodBye();
