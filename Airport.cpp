@@ -217,7 +217,6 @@ void Airport::Add(int option)
 void Airport::Delete(int option)
 {
 	int found;
-	Show(option);
 	if (option == 0)
 		found = Search(option, 3);
 	else if (option == 1)
@@ -229,8 +228,8 @@ void Airport::Delete(int option)
 		cout << "\n========= KHONG TIM THAY TRONG DANH SACH  ==========" << endl;
 		return;
 	}
-	cout << "\n========= XOA THANH CONG ==========" << endl;
 	_ls.erase(_ls.begin() + found);
+	cout << "\n========= XOA THANH CONG ==========" << endl;
 	OutputDataToFile(option);
 }
 
@@ -253,7 +252,7 @@ int Airport::Search(int option, int type)
 			cin.ignore();
 			getline(cin, title);
 			for (int i = 0; i < _ls.size(); ++i)
-				if (ToLower(((Flight *)_ls[i])->GetTitle()) == ToLower(title))
+				if (ToLower(((Flight *)_ls[i])->GetMaChuyenBay()) == ToLower(title))
 					return i;
 			return NOT_FOUND;
 		}
@@ -636,7 +635,7 @@ void Airport::HuyVe()
 		{
 			for (int j = 0; j < FlightList[i].size(); ++j)
 			{
-				if (ToLower(FlightList[i][j].GetTitle()) == ToLower(FlightName))
+				if (ToLower(FlightList[i][j].GetMaChuyenBay()) == ToLower(FlightName))
 				{
 					pos_1 = i;
 					pos_2 = j;
