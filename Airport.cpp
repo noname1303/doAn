@@ -1,25 +1,25 @@
-#include "Library.h"
-Library::Library()
+#include "Airport.h"
+Airport::Airport()
 {
 }
 
-Library::Library(const Library &lib)
+Airport::Airport(const Airport &aport)
 {
-	_ls = lib._ls;
+	_ls = aport._ls;
 }
 
-Library::~Library()
+Airport::~Airport()
 {
 }
 
-LibrarySystem *Library::GetLibSystem(int pos) const
+AirportSystem *Airport::GetAirportSystem(int pos) const
 {
 	if (pos < 0 || pos >= _ls.size())
 		throw "Vi tri truy cap khong hop le";
 	return _ls[pos];
 }
 
-bool Library::IsExist(int option, LibrarySystem *ls) const
+bool Airport::IsExist(int option, AirportSystem *ls) const
 {
 	switch (option)
 	{
@@ -32,7 +32,7 @@ bool Library::IsExist(int option, LibrarySystem *ls) const
 	case 1:
 	{
 		for (int i = 0; i < _ls.size(); ++i)
-			if (((Readers *)ls)->GetID() == ((Readers *)_ls[i])->GetID())
+			if (((Users *)ls)->GetID() == ((Users *)_ls[i])->GetID())
 				return true;
 	}
 	default:
@@ -43,7 +43,7 @@ bool Library::IsExist(int option, LibrarySystem *ls) const
 	return false;
 }
 
-void Library::LoadDataFromFile(int option)
+void Airport::LoadDataFromFile(int option)
 {
 	ifstream input;
 	switch (option)
@@ -55,7 +55,7 @@ void Library::LoadDataFromFile(int option)
 			throw "loi doc file";
 		while (1)
 		{
-			LibrarySystem *ls = NULL;
+			AirportSystem *ls = NULL;
 			ls = new Book;
 			if (!ls)
 				throw "Loi cap phat";
@@ -69,13 +69,13 @@ void Library::LoadDataFromFile(int option)
 	}
 	case 1:
 	{
-		input.open(READERS_DATA_PATH);
+		input.open(USERS_DATA_PATH);
 		if (input.fail())
 			throw "loi doc file";
 		while (1)
 		{
-			LibrarySystem *ls = NULL;
-			ls = new Readers;
+			AirportSystem *ls = NULL;
+			ls = new Users;
 			if (!ls)
 				throw "Loi cap phat";
 			ls->InputFile(input);
@@ -88,13 +88,13 @@ void Library::LoadDataFromFile(int option)
 	}
 	default:
 	{
-		input.open(BORROWEDSLIP_DATA_PATH);
+		input.open(TICKET_DATA_PATH);
 		if (input.fail())
 			throw "loi doc file";
 		while (1)
 		{
-			LibrarySystem *ls = NULL;
-			ls = new BorrowedSlip;
+			AirportSystem *ls = NULL;
+			ls = new BuyTicket;
 			if (!ls)
 				throw "Loi cap phat";
 			ls->InputFile(input);
@@ -109,7 +109,7 @@ void Library::LoadDataFromFile(int option)
 	input.close();
 }
 
-void Library::OutputDataToFile(int option)
+void Airport::OutputDataToFile(int option)
 {
 	ofstream out;
 	switch (option)
@@ -121,12 +121,12 @@ void Library::OutputDataToFile(int option)
 	}
 	case 1:
 	{
-		out.open(READERS_DATA_PATH, ios::trunc);
+		out.open(USERS_DATA_PATH, ios::trunc);
 		break;
 	}
 	default:
 	{
-		out.open(BORROWEDSLIP_DATA_PATH, ios::trunc);
+		out.open(TICKET_DATA_PATH, ios::trunc);
 		break;
 	}
 	}
@@ -137,7 +137,7 @@ void Library::OutputDataToFile(int option)
 	out.close();
 }
 
-void Library::Show(int option)
+void Airport::Show(int option)
 {
 	LoadDataFromFile(option);
 	for (int i = 0; i < _ls.size(); ++i)
@@ -149,7 +149,7 @@ void Library::Show(int option)
 	}
 }
 
-void Library::Add(int option)
+void Airport::Add(int option)
 {
 	LoadDataFromFile(option);
 	ofstream output;
@@ -160,7 +160,7 @@ void Library::Add(int option)
 		output.open(BOOKS_DATA_PATH, ios::app);
 		if (output.fail())
 			throw "Loi doc file";
-		LibrarySystem *book = new Book;
+		AirportSystem *book = new Book;
 		if (book == NULL)
 			throw "Khong the cap phat bo nho";
 		cin.ignore();
@@ -173,48 +173,48 @@ void Library::Add(int option)
 	}
 	case 1:
 	{
-		output.open(READERS_DATA_PATH, ios::app);
+		output.open(USERS_DATA_PATH, ios::app);
 		if (output.fail())
 			throw "Loi doc file";
-		Readers *readers = new Readers;
-		if (readers == NULL)
+		Users *users = new Users;
+		if (users == NULL)
 			throw "Khong the cap phat bo nho";
 		cin.ignore();
-		readers->Input();
-		if (!IsExist(option, readers))
-			readers->OutputFile(output);
+		users->Input();
+		if (!IsExist(option, users))
+			users->OutputFile(output);
 		else
 			cout << "\nVe da ton tai  !";
 		break;
 	}
 	default:
 	{
-		output.open(BORROWEDSLIP_DATA_PATH, ios::app);
+		output.open(TICKET_DATA_PATH, ios::app);
 		if (output.fail())
 			throw "Loi doc file";
-		BorrowedSlip *bs = new BorrowedSlip;
-		if (bs == NULL)
+		BuyTicket *bt = new BuyTicket;
+		if (bt == NULL)
 			throw "Khong the cap phat bo nho";
 		fflush(stdin);
-		bs->Input();
+		bt->Input();
 		for (int i = 0; i < _ls.size(); ++i)
-			if (((BorrowedSlip *)bs)->GetReaders().GetID() == ((BorrowedSlip *)_ls[i])->GetReaders().GetID())
+			if (((BuyTicket *)bt)->GetUsers().GetID() == ((BuyTicket *)_ls[i])->GetUsers().GetID())
 			{
-				if (((BorrowedSlip *)bs)->GetReaders() == ((BorrowedSlip *)_ls[i])->GetReaders())
-					bs->OutputFile(output);
+				if (((BuyTicket *)bt)->GetUsers() == ((BuyTicket *)_ls[i])->GetUsers())
+					bt->OutputFile(output);
 				else
 					cerr << "\n=== ERROR: Trung ID nhung khac thong tin ===" << endl;
 				output.close();
 				return;
 			}
-		bs->OutputFile(output);
+		bt->OutputFile(output);
 		break;
 	}
 	}
 	output.close();
 }
 
-void Library::Delete(int option)
+void Airport::Delete(int option)
 {
 	int found;
 	if (option == 0)
@@ -233,7 +233,7 @@ void Library::Delete(int option)
 	OutputDataToFile(option);
 }
 
-int Library::Search(int option, int type)
+int Airport::Search(int option, int type)
 {
 	//option 0-book, 1-readers, default - borrowed slip
 	LoadDataFromFile(option);
@@ -303,7 +303,7 @@ int Library::Search(int option, int type)
 			cin.ignore();
 			getline(cin, name);
 			for (int i = 0; i < _ls.size(); ++i)
-				if (ToLower(((Readers *)_ls[i])->GetName()) == ToLower(name))
+				if (ToLower(((Users *)_ls[i])->GetName()) == ToLower(name))
 					return i;
 			return NOT_FOUND;
 		}
@@ -315,7 +315,7 @@ int Library::Search(int option, int type)
 			cin.ignore();
 			getline(cin, ID);
 			for (int i = 0; i < _ls.size(); ++i)
-				if (ToLower(((Readers *)_ls[i])->GetID()) == ToLower(ID))
+				if (ToLower(((Users *)_ls[i])->GetID()) == ToLower(ID))
 					return i;
 			return NOT_FOUND;
 		}
@@ -328,8 +328,8 @@ int Library::Search(int option, int type)
 		getline(cin, name_ID);
 		for (int i = 0; i < _ls.size(); ++i)
 		{
-			string r_name = ((BorrowedSlip *)_ls[i])->GetReaders().GetName();
-			string r_ID = ((BorrowedSlip *)_ls[i])->GetReaders().GetID();
+			string r_name = ((BuyTicket *)_ls[i])->GetUsers().GetName();
+			string r_ID = ((BuyTicket *)_ls[i])->GetUsers().GetID();
 			if (ToLower(r_name) == ToLower(name_ID) || r_ID == name_ID)
 				return i;
 		}
@@ -338,7 +338,7 @@ int Library::Search(int option, int type)
 	}
 }
 
-void Library::Edit(int option)
+void Airport::Edit(int option)
 {
 	int found = Search(option, 0);
 	if (found == NOT_FOUND)
@@ -461,7 +461,7 @@ void Library::Edit(int option)
 			cout << "Nhap ten doc gia: ";
 			string name;
 			getline(cin, name);
-			((Readers *)_ls[found])->SetName(name);
+			((Users *)_ls[found])->SetName(name);
 			break;
 		}
 		case 2:
@@ -472,10 +472,10 @@ void Library::Edit(int option)
 			{
 				cout << "Nhap ID doc gia: ";
 				getline(cin, ID);
-				if (Readers::CheckID(ID))
+				if (Users::CheckID(ID))
 					break;
 			}
-			((Readers *)_ls[found])->SetID(ID);
+			((Users *)_ls[found])->SetID(ID);
 			break;
 		}
 		case 3:
@@ -484,7 +484,7 @@ void Library::Edit(int option)
 			cout << "Nhap Dia Chi Doc Gia: ";
 			string address;
 			getline(cin, address);
-			((Readers *)_ls[found])->SetAddress(address);
+			((Users *)_ls[found])->SetAddress(address);
 			break;
 		}
 		default:
@@ -498,7 +498,7 @@ void Library::Edit(int option)
 				if (age > 0)
 					break;
 			}
-			((Readers *)_ls[found])->SetAge(age);
+			((Users *)_ls[found])->SetAge(age);
 			break;
 		}
 		}
@@ -524,9 +524,9 @@ void Library::Edit(int option)
 		case 1:
 		{
 			cout << "\n\t===== Nhap thong tin can chinh sua =====" << endl;
-			Readers r;
+			Users r;
 			r.Input();
-			((BorrowedSlip *)_ls[found])->SetReaders(r);
+			((BuyTicket *)_ls[found])->SetUsers(r);
 			break;
 		}
 		default:
@@ -541,7 +541,7 @@ void Library::Edit(int option)
 					break;
 				cerr << "\nNgay nhap khong hop le !" << endl;
 			}
-			((BorrowedSlip *)_ls[found])->SetBorrowDate(date);
+			((BuyTicket *)_ls[found])->SetBorrowDate(date);
 			break;
 		}
 		}
@@ -551,12 +551,12 @@ void Library::Edit(int option)
 	OutputDataToFile(option);
 }
 
-void Library::BorrowBook()
+void Airport::MuaVe()
 {
 	this->Add(3);
 }
 
-void Library::ReturnBook()
+void Airport::HuyVe()
 {
 	LoadDataFromFile(3);
 
@@ -566,12 +566,12 @@ void Library::ReturnBook()
 	{
 		cout << "\nNhap ID nguoi muon: ";
 		getline(cin, ID);
-		if (Readers::CheckID(ID))
+		if (Users::CheckID(ID))
 			break;
 	}
 	vector<int> founds;
 	for (int i = 0; i < _ls.size(); ++i)
-		if (((BorrowedSlip *)_ls[i])->GetReaders().GetID() == ID)
+		if (((BuyTicket *)_ls[i])->GetUsers().GetID() == ID)
 			founds.push_back(i);
 	if (founds.size() == 0)
 	{
@@ -598,7 +598,7 @@ void Library::ReturnBook()
 			{
 				for (int i = 0; i < founds.size(); ++i)
 				{
-					if (((BorrowedSlip *)_ls[founds[i]])->GetBorrowDate() > date)
+					if (((BuyTicket *)_ls[founds[i]])->GetBorrowDate() > date)
 					{
 						cerr << "\nNgay nhap khong hop le (Ngay tra >= ngay muon) !";
 						check = false;
@@ -616,13 +616,13 @@ void Library::ReturnBook()
 		}
 		for (int i = 0; i < founds.size(); ++i)
 		{
-			int n = ((BorrowedSlip *)_ls[founds[i]])->GetBookList().size();
+			int n = ((BuyTicket *)_ls[founds[i]])->GetBookList().size();
 			for (int j = 0; j < n; ++j)
 			{
-				if (((BorrowedSlip *)_ls[founds[i]])->GetReturned(j) == 0)
+				if (((BuyTicket *)_ls[founds[i]])->GetReturned(j) == 0)
 				{
-					((BorrowedSlip *)_ls[founds[i]])->SetReturned(j, 1);
-					((BorrowedSlip *)_ls[founds[i]])->SetBookReturnDate(j, date);
+					((BuyTicket *)_ls[founds[i]])->SetReturned(j, 1);
+					((BuyTicket *)_ls[founds[i]])->SetBookReturnDate(j, date);
 				}
 			}
 		}
@@ -636,7 +636,7 @@ void Library::ReturnBook()
 
 		vector<vector<Book>> bookList;
 		for (int i = 0; i < founds.size(); ++i)
-			bookList.push_back(((BorrowedSlip *)_ls[founds[i]])->GetBookList());
+			bookList.push_back(((BuyTicket *)_ls[founds[i]])->GetBookList());
 		int pos_1 = -1;
 		int pos_2 = -1;
 		for (int i = 0; i < founds.size(); ++i)
@@ -661,19 +661,19 @@ void Library::ReturnBook()
 		{
 			cout << "\nNhap ngay tra: ";
 			cin >> date;
-			if (date.validityCheck_Fix() == true && date >= ((BorrowedSlip *)_ls[founds[pos_1]])->GetBorrowDate())
+			if (date.validityCheck_Fix() == true && date >= ((BuyTicket *)_ls[founds[pos_1]])->GetBorrowDate())
 				break;
 			cerr << "\nNgay nhap khong hop le (Ngay tra >= ngay muon) !";
 		}
-		((BorrowedSlip *)_ls[founds[pos_1]])->SetReturned(pos_2, 1);
-		((BorrowedSlip *)_ls[founds[pos_1]])->SetBookReturnDate(pos_2, date);
+		((BuyTicket *)_ls[founds[pos_1]])->SetReturned(pos_2, 1);
+		((BuyTicket *)_ls[founds[pos_1]])->SetBookReturnDate(pos_2, date);
 	}
 	cout << "\n========== TRA THANH CONG ==========" << endl;
 	//Luu lai file
 	OutputDataToFile(3);
 }
 
-void Library::OverdueList()
+void Airport::OverdueList()
 {
 	LoadDataFromFile(3);
 	Date now;
@@ -685,17 +685,17 @@ void Library::OverdueList()
 			break;
 		cerr << "\nNgay nhap khog hop le !";
 	}
-	vector<Readers> overdueReaders;
+	vector<Users> overdueUsers;
 	vector<int> money;
 
 	//liet ke nhung doc gia muon sach qua han
 	for (int i = 0; i < _ls.size(); ++i)
 	{
 		int money_t = 0;
-		vector<int> returned = ((BorrowedSlip *)_ls[i])->GetReturned();
-		vector<Date> returnDate = ((BorrowedSlip *)_ls[i])->GetBookReturnDate();
-		Date borrowDate = ((BorrowedSlip *)_ls[i])->GetBorrowDate();
-		vector<Book> bookList = ((BorrowedSlip *)_ls[i])->GetBookList();
+		vector<int> returned = ((BuyTicket *)_ls[i])->GetReturned();
+		vector<Date> returnDate = ((BuyTicket *)_ls[i])->GetBookReturnDate();
+		Date borrowDate = ((BuyTicket *)_ls[i])->GetBorrowDate();
+		vector<Book> bookList = ((BuyTicket *)_ls[i])->GetBookList();
 		//ngay muon toi da
 		borrowDate += 7;
 		bool overdue = false;
@@ -732,12 +732,12 @@ void Library::OverdueList()
 		}
 		if (overdue == true)
 		{
-			overdueReaders.push_back(((BorrowedSlip *)_ls[i])->GetReaders());
+			overdueUsers.push_back(((BuyTicket *)_ls[i])->GetUsers());
 			money.push_back(money_t);
 		}
 	}
 
-	if (overdueReaders.size() == 0)
+	if (overdueUsers.size() == 0)
 	{
 		TextColor(3);
 		cout << "\n========== KHONG CO DOC GIA NAO MUON SACH QUA HAN ==========\n";
@@ -745,17 +745,17 @@ void Library::OverdueList()
 	}
 
 	//Merge doc gia bi trung
-	vector<Readers> RE_result;
+	vector<Users> RE_result;
 	vector<int> MO_result;
-	RE_result.push_back(overdueReaders[0]);
+	RE_result.push_back(overdueUsers[0]);
 	MO_result.push_back(money[0]);
 
-	for (int i = 1; i < overdueReaders.size(); ++i)
+	for (int i = 1; i < overdueUsers.size(); ++i)
 	{
 		bool check = true;
 		for (int j = 0; j < RE_result.size(); ++j)
 		{
-			if (overdueReaders[i].GetID() == RE_result[j].GetID())
+			if (overdueUsers[i].GetID() == RE_result[j].GetID())
 			{
 				MO_result[j] += money[i];
 				check = false;
@@ -764,7 +764,7 @@ void Library::OverdueList()
 		}
 		if (check)
 		{
-			RE_result.push_back(overdueReaders[i]);
+			RE_result.push_back(overdueUsers[i]);
 			MO_result.push_back(money[i]);
 		}
 	}

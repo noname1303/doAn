@@ -1,33 +1,33 @@
 #pragma once
-#ifndef _BORROWEDSLIP_
-#define _BORROWEDSLIP_
+#ifndef _BUYTICKET_
+#define _BUYTICKET_
 
-#include "LibrarySystem.h"
+#include "AirportSystem.h"
 #include "Book.h"
-#include "Readers.h"
+#include "Users.h"
 #include "Date.h"
-class BorrowedSlip :public LibrarySystem
+class BuyTicket : public AirportSystem
 {
 private:
-	Readers _readers;
+	Users _users;
 	vector<Book> _book_list;
 	Date _borrow_date;
 	vector<Date> _book_return_date;
 	vector<int> _returned;
-public:
-	BorrowedSlip();
-	BorrowedSlip(const BorrowedSlip& bs);
-	~BorrowedSlip();
 
-	Readers GetReaders() const;
+public:
+	BuyTicket();
+	BuyTicket(const BuyTicket &bs);
+	~BuyTicket();
+
+	Users GetUsers() const;
 	Date GetBorrowDate() const;
 	vector<Date> GetBookReturnDate() const;
 	int GetReturned(int pos) const;
 	vector<int> GetReturned() const;
 	vector<Book> GetBookList() const;
 
-
-	void SetReaders(const Readers& r);
+	void SetUsers(const Users &r);
 	void SetBorrowDate(Date date);
 	void SetBookReturnDate(int pos, Date date);
 	void SetReturned(int pos, int returned);
@@ -35,8 +35,7 @@ public:
 	void Input();
 	void Output();
 
-	void InputFile(ifstream& input);
-	void OutputFile(ofstream& path);
-
+	void InputFile(ifstream &input);
+	void OutputFile(ofstream &path);
 };
 #endif

@@ -1,6 +1,8 @@
-#include "LibrarySystem.h"
-bool IsEmpty(const string& data) {
-	if (data.empty()) {
+#include "AirportSystem.h"
+bool IsEmpty(const string &data)
+{
+	if (data.empty())
+	{
 		cerr << "\nKhong duoc bo trong";
 		return true;
 	}
@@ -10,7 +12,8 @@ bool IsEmpty(const string& data) {
 	return false;
 }
 
-string ToLower(const string& str) {
+string ToLower(const string &str)
+{
 	string temp = "";
 	for (int i = 0; i < str.length(); ++i)
 		temp.push_back(tolower(str[i]));

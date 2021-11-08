@@ -1,66 +1,81 @@
-#include "BorrowedSlip.h"
+#include "BuyTicket.h"
 
-BorrowedSlip::BorrowedSlip() {
+BuyTicket::BuyTicket()
+{
 	_book_list.resize(0);
 	_returned.resize(0);
 }
-BorrowedSlip::BorrowedSlip(const BorrowedSlip& bs) {
-	_readers = bs._readers;
+BuyTicket::BuyTicket(const BuyTicket &bs)
+{
+	_users = bs._users;
 	_book_list = bs._book_list;
 	_borrow_date = bs._borrow_date;
 	_book_return_date = bs._book_return_date;
 	_returned = bs._returned;
 }
-BorrowedSlip::~BorrowedSlip() {
-
+BuyTicket::~BuyTicket()
+{
 }
 
-Readers BorrowedSlip::GetReaders() const {
-	return _readers;
+Users BuyTicket::GetUsers() const
+{
+	return _users;
 }
-Date BorrowedSlip::GetBorrowDate() const {
+Date BuyTicket::GetBorrowDate() const
+{
 	return _borrow_date;
 }
-vector<Date> BorrowedSlip::GetBookReturnDate() const {
+vector<Date> BuyTicket::GetBookReturnDate() const
+{
 	return _book_return_date;
 }
-vector<int> BorrowedSlip::GetReturned() const {
+vector<int> BuyTicket::GetReturned() const
+{
 	return _returned;
 }
-vector<Book> BorrowedSlip::GetBookList() const {
+vector<Book> BuyTicket::GetBookList() const
+{
 	return _book_list;
 }
-int BorrowedSlip::GetReturned(int pos) const {
-	if(pos >=0 && pos < _returned.size())
+int BuyTicket::GetReturned(int pos) const
+{
+	if (pos >= 0 && pos < _returned.size())
 		return _returned[pos];
-	else {
+	else
+	{
 		throw "Loi truy cap";
 		return -1;
 	}
 }
 
-void BorrowedSlip::SetReaders(const Readers& r) {
-	_readers = r;
+void BuyTicket::SetUsers(const Users &r)
+{
+	_users = r;
 }
-void BorrowedSlip::SetBorrowDate(Date date) {
-	if(date.validityCheck_Fix())
+void BuyTicket::SetBorrowDate(Date date)
+{
+	if (date.validityCheck_Fix())
 		_borrow_date = date;
 }
-void BorrowedSlip::SetBookReturnDate(int pos, Date date) {
-	if(date.validityCheck_Fix() && date >= _borrow_date && pos >=0 && pos < _book_return_date.size())
+void BuyTicket::SetBookReturnDate(int pos, Date date)
+{
+	if (date.validityCheck_Fix() && date >= _borrow_date && pos >= 0 && pos < _book_return_date.size())
 		_book_return_date[pos] = date;
 }
-void BorrowedSlip::SetReturned(int pos, int returned) {
+void BuyTicket::SetReturned(int pos, int returned)
+{
 	if (pos >= 0 && pos < _returned.size())
 		_returned[pos] = returned;
 }
 
-void BorrowedSlip::Input() {
+void BuyTicket::Input()
+{
 	cout << "\n===== Nhap thong tin nguoi muon =====";
-	_readers.Input();
+	_users.Input();
 	cout << "\n===== Nhap thong tin cac loai sach muon =====";
 	int n;
-	while (1) {
+	while (1)
+	{
 		cout << "\nNhap so luong sach muon: ";
 		cin >> n;
 		if (cin.fail())
@@ -71,12 +86,14 @@ void BorrowedSlip::Input() {
 	}
 	cin.ignore();
 	_book_list.resize(n);
-	for (int i = 0; i < n; ++i) {
+	for (int i = 0; i < n; ++i)
+	{
 		cout << "\n==== Nhap thong tin sach thu " << i + 1 << " ====";
 		_book_list[i].Input();
 		cin.ignore();
-	}	
-	while (1) {
+	}
+	while (1)
+	{
 		cout << "\nNgay muon sach (dd/mm/yyyy): ";
 		cin >> _borrow_date;
 		if (_borrow_date.validityCheck_Fix())
@@ -86,28 +103,32 @@ void BorrowedSlip::Input() {
 	for (int i = 0; i < n; ++i)
 		_returned.push_back(0);
 }
-void BorrowedSlip::Output() {
+void BuyTicket::Output()
+{
 	cout << "\n===== Thong tin nguoi muon =====";
-	_readers.Output();
+	_users.Output();
 	cout << "\n\n===== Thong tin cac sach da muon =====";
-	for (int i = 0; i < _book_list.size(); ++i) {
+	for (int i = 0; i < _book_list.size(); ++i)
+	{
 		cout << "\n========== Quyen " << i + 1 << " ==========";
 		_book_list[i].Output();
 	}
 	cout << "\n\n========== Thong tin Muon/Tra ==========" << endl;
 	cout << "Ngay muon sach: " << _borrow_date;
 	cout << "\nNgay tra sach: " << endl;
-	for (int i = 0; i < _returned.size(); ++i) {
+	for (int i = 0; i < _returned.size(); ++i)
+	{
 		cout << "-->Quyen " << i + 1 << ": ";
 		if (!_returned[i])
 			cout << "... (chua tra)" << endl;
 		else
 			cout << _book_return_date[i] << endl;
-	}	
+	}
 }
 
-void BorrowedSlip::InputFile(ifstream& input) {
-	_readers.InputFile(input);
+void BuyTicket::InputFile(ifstream &input)
+{
+	_users.InputFile(input);
 	if (input.eof())
 		return;
 	int n;
@@ -115,7 +136,8 @@ void BorrowedSlip::InputFile(ifstream& input) {
 	if (input.fail())
 		throw "Khong the doc file";
 	_book_list.resize(n);
-	for (int i = 0; i < n; ++i) {
+	for (int i = 0; i < n; ++i)
+	{
 		input.ignore();
 		_book_list[i].InputFile(input);
 	}
@@ -123,27 +145,32 @@ void BorrowedSlip::InputFile(ifstream& input) {
 
 	_returned.resize(n);
 	_book_return_date.resize(n);
-	for (int i = 0; i < n; ++i) {
+	for (int i = 0; i < n; ++i)
+	{
 		input >> _returned[i];
 		if (_returned[i] != 0)
 			input >> _book_return_date[i];
 	}
 }
-void BorrowedSlip::OutputFile(ofstream& out) {
-	out << _readers;
+void BuyTicket::OutputFile(ofstream &out)
+{
+	out << _users;
 	out << _book_list.size() << endl;
 	for (int i = 0; i < _book_list.size(); ++i)
 		out << _book_list[i];
 	out << _borrow_date << endl;
-	for (int i = 0; i < _returned.size(); ++i) {
-		if (_returned[i] != 0) {
+	for (int i = 0; i < _returned.size(); ++i)
+	{
+		if (_returned[i] != 0)
+		{
 			out << _returned[i] << " ";
 			if (i != _returned.size() - 1)
 				out << _book_return_date[i] << " ";
 			else
 				out << _book_return_date[i];
 		}
-		else {
+		else
+		{
 			if (i != _returned.size() - 1)
 				out << _returned[i] << " ";
 			else

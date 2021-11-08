@@ -23,7 +23,7 @@ bool Login::dangNhap()
     cout << figlet("Dang nhap");
     cout << "Nhap tai khoan va mat khau.\nTai Khoan:";
     cin >> taiKhoanTmp;
-    int userID = checkFile(taiKhoanTmp, "users.txt");
+    int userID = checkFile(taiKhoanTmp, "gmail.txt");
     if (userID != 0)
     {
         cout << "Mat khau:";
@@ -101,7 +101,7 @@ void Login::dangKi()
 {
     string tk, mk;
     Figlet figlet(FigletFont::make("Fonts/Standard.flf"), Smushed::make());
-
+    system("cls");
     cout << figlet("Dang ky");
 
     cout << "Vui long nhap ten tai khoan:\t";
@@ -109,7 +109,7 @@ void Login::dangKi()
 
     cout << "Vui long nhap mat khau:\t";
     cin >> mk;
-    saveFile(tk, "users.txt");
+    saveFile(tk, "gmail.txt");
     saveFile(mk, "passwords.txt");
     dangNhap();
 }

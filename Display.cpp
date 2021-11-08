@@ -1,5 +1,6 @@
 ﻿#include "Display.h"
 #include "Login.h"
+#include "Airport.h"
 #include "srilakshmikanthanp/Figlet.hpp"
 
 using namespace srilakshmikanthanp;
@@ -125,8 +126,8 @@ void Display::ControlShowOption()
 					cout << "\n======= DANH SACH CHUYEN BAY =======";
 				else
 					cout << "\n======= DANH SACH VE MAY BAY =======";
-				Library lib;
-				lib.Show(option);
+				Airport aport;
+				aport.Show(option);
 				TextColor(12);
 				cout << "\n\n<== Nhan phim bat ky de tiep tuc ==>" << endl;
 				_getch();
@@ -229,22 +230,22 @@ void Display::ControlUpdateOption()
 				case 0:
 				{
 					int type = ReduceUpdateCode("THEM");
-					Library lib;
-					lib.Add(type);
+					Airport aport;
+					aport.Add(type);
 					break;
 				}
 				case 1:
 				{
 					int type = ReduceUpdateCode("XOA");
-					Library lib;
-					lib.Delete(type);
+					Airport aport;
+					aport.Delete(type);
 					break;
 				}
 				default:
 				{
 					int type = ReduceUpdateCode("SUA CHUA");
-					Library lib;
-					lib.Edit(type);
+					Airport aport;
+					aport.Edit(type);
 					break;
 				}
 				break;
@@ -346,13 +347,13 @@ void Display::ControlSearchOption()
 					if (cin.fail())
 						throw "Du lieu nhap khong phai so";
 					TextColor(11);
-					Library lib;
-					int found = lib.Search(option, type);
+					Airport aport;
+					int found = aport.Search(option, type);
 					if (found != NOT_FOUND)
 					{
 						TextColor(13);
 						cout << "\n========== TIM THAY ==========";
-						lib.GetLibSystem(found)->Output();
+						aport.GetAirportSystem(found)->Output();
 					}
 					else
 					{
@@ -375,13 +376,13 @@ void Display::ControlSearchOption()
 					if (cin.fail())
 						throw "Du lieu nhap khong phai so";
 					TextColor(11);
-					Library lib;
-					int found = lib.Search(option, type);
+					Airport aport;
+					int found = aport.Search(option, type);
 					if (found != NOT_FOUND)
 					{
 						TextColor(13);
 						cout << "\n========== TIM THAY ==========";
-						lib.GetLibSystem(found)->Output();
+						aport.GetAirportSystem(found)->Output();
 					}
 					else
 					{
@@ -397,13 +398,13 @@ void Display::ControlSearchOption()
 					TextColor(UPDATE_COLOR);
 					cout << "========== TIM KIEM VE ==========" << endl;
 					TextColor(11);
-					Library lib;
-					int found = lib.Search(option, 0);
+					Airport aport;
+					int found = aport.Search(option, 0);
 					if (found != NOT_FOUND)
 					{
 						TextColor(13);
 						cout << "\n========== TIM THAY ==========";
-						lib.GetLibSystem(found)->Output();
+						aport.GetAirportSystem(found)->Output();
 					}
 					else
 					{
@@ -439,8 +440,8 @@ void Display::ControlBorrowBookOption()
 	ShowConsoleCursor(true);
 	cout << "======== MUA VE ========";
 	TextColor(7);
-	Library lib;
-	lib.BorrowBook();
+	Airport aport;
+	aport.MuaVe();
 	TextColor(12);
 	cout << "\n<== Nhan phim bat ky de tiep tuc ==>" << endl;
 	_getch();
@@ -455,8 +456,8 @@ void Display::ControlReturnBookOption()
 	ShowConsoleCursor(true);
 	cout << "======== He Thong Quan Ly Thu Vien - Tra Sach ========";
 	TextColor(7);
-	Library lib;
-	lib.ReturnBook();
+	Airport aport;
+	aport.HuyVe();
 	TextColor(12);
 	cout << "\n<== Nhan phim bat ky de tiep tuc ==>" << endl;
 	_getch();
@@ -471,8 +472,8 @@ void Display::ControlOverdueListOption()
 	ShowConsoleCursor(true);
 	cout << "======== He Thong Quan Ly Thu Vien - Danh sach qua han muon sach ========";
 	TextColor(7);
-	Library lib;
-	lib.OverdueList();
+	Airport aport;
+	aport.OverdueList();
 	TextColor(12);
 	cout << "\n<== Nhan phim bat ky de tiep tuc ==>" << endl;
 	_getch();
