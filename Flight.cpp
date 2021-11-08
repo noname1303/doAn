@@ -1,20 +1,20 @@
-#include "Book.h"
-Book::Book() {
+#include "Flight.h"
+Flight::Flight() {
 	_title = "";
 	_author = "";
 	_publisher = "";
 	_ISBN = "";
 	_price = 0;
 }
-Book::Book(const Book& book) {
-	_title = book._title;
-	_author = book._author;
-	_publisher = book._publisher;
-	_code = book._code;
-	_ISBN = book._ISBN;
-	_price = book._price;
+Flight::Flight(const Flight& Flight) {
+	_title = Flight._title;
+	_author = Flight._author;
+	_publisher = Flight._publisher;
+	_code = Flight._code;
+	_ISBN = Flight._ISBN;
+	_price = Flight._price;
 }
-Book::Book(const string& name, const string& author, const string& publisher, const string& code, const string& ISBN, double price) {
+Flight::Flight(const string& name, const string& author, const string& publisher, const string& code, const string& ISBN, double price) {
 	_title = name;
 	_author = author;
 	_publisher = publisher;
@@ -25,55 +25,55 @@ Book::Book(const string& name, const string& author, const string& publisher, co
 	else
 		_price = price;
 }
-Book::~Book() {
+Flight::~Flight() {
 
 }
 
-string Book::GetAuthor() const {
+string Flight::GetAuthor() const {
 	return _author;
 }
-string Book::GetCode() const {
+string Flight::GetCode() const {
 	return _code;
 }
-string Book::GetISBN() const {
+string Flight::GetISBN() const {
 	return _ISBN;
 }
-string Book::GetPublisher() const {
+string Flight::GetPublisher() const {
 	return _publisher;
 }
-string Book::GetTitle() const {
+string Flight::GetTitle() const {
 	return _title;
 }
-double Book::GetPrice() const {
+double Flight::GetPrice() const {
 	return _price;
 }
 
-void Book::SetTitle(const string& title) {
+void Flight::SetTitle(const string& title) {
 	if (!IsEmpty(title))
 		_title = title;
 }
-void Book::SetAuthor(const string& author) {
+void Flight::SetAuthor(const string& author) {
 	if (!IsEmpty(author))
 		_author = author;
 }
-void Book::SetPublisher(const string& pub) {
+void Flight::SetPublisher(const string& pub) {
 	if (!IsEmpty(pub)) 
 		_publisher = pub;
 }
-void Book::SetCode(const string& code) {
-	if (CheckBookCode(code))
+void Flight::SetCode(const string& code) {
+	if (CheckFlightCode(code))
 		_code = code;
 }
-void Book::SetISBN(const string& ISBN) {
+void Flight::SetISBN(const string& ISBN) {
 	if (CheckISBN(ISBN))
 		_ISBN = ISBN;
 }
-void Book::SetPrice(double price) {
+void Flight::SetPrice(double price) {
 	if (price > 0)
 		_price = price;
 }
 
-bool Book::CheckISBN(const string& ISBN) {
+bool Flight::CheckISBN(const string& ISBN) {
 	if (IsEmpty(ISBN))
 		return false;
 
@@ -94,7 +94,7 @@ bool Book::CheckISBN(const string& ISBN) {
 		}
 	return true;
 }
-bool Book::CheckBookCode(const string& code) {
+bool Flight::CheckFlightCode(const string& code) {
 	for (int i = 0; i < code.length(); ++i)
 		if (code[i] > '9' || code[i] < '0') {
 			cerr << "\nMa Sach phai la nhung chu so 0-9 !";
@@ -102,43 +102,43 @@ bool Book::CheckBookCode(const string& code) {
 		}
 	return true;
 }
-bool Book::IsVNBook(const string& ISBN) {
+bool Flight::IsVNFlight(const string& ISBN) {
 	if (CheckISBN(ISBN)) 	
 		if (ISBN.substr(3, 3) == ISBN_VN)
 			return true;
 	return false;
 }
 
-string Book::FormatISBN() const {
+string Flight::FormatISBN() const {
 	string res = _ISBN;
 	res.insert(3, "-");
 	return res;
 }
-void Book::Input() {
+void Flight::Input() {
 	while (1) {
-		cout << "\nNhap ten sach: ";
+		cout << "\nMa hieu may bay: ";
 		getline(cin, _title);
 		if (!IsEmpty(_title))
 			break;
 	}
 	while (1) {
-		cout << "\nNhap ten tac gia: ";
+		cout << "\nNhap loai may bay:";
 		getline(cin, _author);
 		if (!IsEmpty(_author))
 			break;
 	}
 	while (1) {
-		cout << "\nNhap NXB: ";
+		cout << "\nNhap so day: ";
 		getline(cin, _publisher);
 		if (!IsEmpty(_publisher))
 			break;
 	}
 	while (1) {
-		cout << "\nNhap ma sach: ";
+		cout << "\nNhap so ghe: ";
 		getline(cin, _code);
 		if (!IsEmpty(_code))
 			break;
-		if (CheckBookCode(_code))
+		if (CheckFlightCode(_code))
 			break;
 	}
 	while (1) {
@@ -159,7 +159,7 @@ void Book::Input() {
 		cerr << "\nGia sach phai lon hon 0 !";		
 	} 
 }
-void Book::Output() {
+void Flight::Output() {
 	cout << "\nTen sach: " << _title;
 	cout << "\nTac gia: " << _author;
 	cout << "\nNXB: " << _publisher;
@@ -168,7 +168,7 @@ void Book::Output() {
 	cout << "\nGia sach: " << setprecision(10) << _price;
 }
 
-void Book::InputFile(ifstream& input) {
+void Flight::InputFile(ifstream& input) {
 	getline(input, _title);
 	getline(input, _author);
 	getline(input, _publisher);
@@ -176,7 +176,7 @@ void Book::InputFile(ifstream& input) {
 	getline(input, _ISBN);
 	input >> _price;
 }
-void Book::OutputFile(ofstream& out){
+void Flight::OutputFile(ofstream& out){
 	out << _title << endl;
 	out << _author << endl;
 	out << _publisher << endl;
@@ -185,22 +185,22 @@ void Book::OutputFile(ofstream& out){
 	out << _price << endl;
 }
 
-Book& Book::operator= (const Book& book) {
-	_title = book._title;
-	_author = book._author;
-	_publisher = book._publisher;
-	_code = book._code;
-	_ISBN = book._ISBN;
-	_price = book._price;
+Flight& Flight::operator= (const Flight& Flight) {
+	_title = Flight._title;
+	_author = Flight._author;
+	_publisher = Flight._publisher;
+	_code = Flight._code;
+	_ISBN = Flight._ISBN;
+	_price = Flight._price;
 	return *this;
 }
 
-ostream& operator<< (ostream& os, const Book& book) {
-	os << book._title << endl;
-	os << book._author << endl;
-	os << book._publisher << endl;
-	os << book._code << endl;
-	os << book._ISBN << endl;
-	os << book._price << endl;
+ostream& operator<< (ostream& os, const Flight& Flight) {
+	os << Flight._title << endl;
+	os << Flight._author << endl;
+	os << Flight._publisher << endl;
+	os << Flight._code << endl;
+	os << Flight._ISBN << endl;
+	os << Flight._price << endl;
 	return os;
 }

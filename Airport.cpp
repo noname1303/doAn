@@ -26,7 +26,7 @@ bool Airport::IsExist(int option, AirportSystem *ls) const
 	case 0:
 	{
 		for (int i = 0; i < _ls.size(); ++i)
-			if (((Book *)ls)->GetISBN() == ((Book *)_ls[i])->GetISBN())
+			if (((Flight *)ls)->GetISBN() == ((Flight *)_ls[i])->GetISBN())
 				return true;
 	}
 	case 1:
@@ -50,13 +50,13 @@ void Airport::LoadDataFromFile(int option)
 	{
 	case 0:
 	{
-		input.open(BOOKS_DATA_PATH);
+		input.open(FLIGHT_DATA_PATH);
 		if (input.fail())
 			throw "loi doc file";
 		while (1)
 		{
 			AirportSystem *ls = NULL;
-			ls = new Book;
+			ls = new Flight;
 			if (!ls)
 				throw "Loi cap phat";
 			ls->InputFile(input);
@@ -116,7 +116,7 @@ void Airport::OutputDataToFile(int option)
 	{
 	case 0:
 	{
-		out.open(BOOKS_DATA_PATH, ios::trunc);
+		out.open(FLIGHT_DATA_PATH, ios::trunc);
 		break;
 	}
 	case 1:
@@ -157,16 +157,16 @@ void Airport::Add(int option)
 	{
 	case 0:
 	{
-		output.open(BOOKS_DATA_PATH, ios::app);
+		output.open(FLIGHT_DATA_PATH, ios::app);
 		if (output.fail())
 			throw "Loi doc file";
-		AirportSystem *book = new Book;
-		if (book == NULL)
+		AirportSystem *flight = new Flight;
+		if (flight == NULL)
 			throw "Khong the cap phat bo nho";
 		cin.ignore();
-		book->Input();
-		if (!IsExist(option, book))
-			book->OutputFile(output);
+		flight->Input();
+		if (!IsExist(option, flight))
+			flight->OutputFile(output);
 		else
 			cout << "\nMay bay da ton tai trong database !";
 		break;
@@ -217,6 +217,7 @@ void Airport::Add(int option)
 void Airport::Delete(int option)
 {
 	int found;
+	Show(option);
 	if (option == 0)
 		found = Search(option, 3);
 	else if (option == 1)
@@ -237,6 +238,7 @@ int Airport::Search(int option, int type)
 {
 	//option 0-book, 1-readers, default - borrowed slip
 	LoadDataFromFile(option);
+
 	switch (option)
 	{
 	case 0:
@@ -251,24 +253,24 @@ int Airport::Search(int option, int type)
 			cin.ignore();
 			getline(cin, title);
 			for (int i = 0; i < _ls.size(); ++i)
-				if (ToLower(((Book *)_ls[i])->GetTitle()) == ToLower(title))
+				if (ToLower(((Flight *)_ls[i])->GetTitle()) == ToLower(title))
 					return i;
 			return NOT_FOUND;
 		}
 		case 1:
 		{
-			//search by book code
+			//search by Flight code
 			string code;
 			while (1)
 			{
 				cout << "\nNhap ma maybay: ";
 				cin.ignore();
 				getline(cin, code);
-				if (Book::CheckBookCode(code))
+				if (Flight::CheckFlightCode(code))
 					break;
 			}
 			for (int i = 0; i < _ls.size(); ++i)
-				if (ToLower(((Book *)_ls[i])->GetCode()) == ToLower(code))
+				if (ToLower(((Flight *)_ls[i])->GetCode()) == ToLower(code))
 					return i;
 			return NOT_FOUND;
 		}
@@ -281,11 +283,11 @@ int Airport::Search(int option, int type)
 			{
 				cout << "\nNhap ma ISBN-13: ";
 				getline(cin, ISBN);
-				if (Book::CheckISBN(ISBN))
+				if (Flight::CheckISBN(ISBN))
 					break;
 			}
 			for (int i = 0; i < _ls.size(); ++i)
-				if (ToLower(((Book *)_ls[i])->GetISBN()) == ToLower(ISBN))
+				if (ToLower(((Flight *)_ls[i])->GetISBN()) == ToLower(ISBN))
 					return i;
 			return NOT_FOUND;
 		}
@@ -352,7 +354,7 @@ void Airport::Edit(int option)
 	case 0:
 	{
 		TextColor(3);
-		cout << "\n0-Sua Tat Ca, 1-Loai may bay, 2-Ma hieu may bay, 3-SoGhe, 4-So Day, 5-ISBN, 6-Gia Sach >> ";
+		cout << "\n0-Sua Tat Ca, 1-Loai may bay, 2-Ma hieu may bay, 3-SoGhe, 4-So Day, 5-ISBN, >> ";
 		cin >> type;
 		if (cin.fail())
 			throw "Du lieu nhap khong la so";
@@ -372,7 +374,7 @@ void Airport::Edit(int option)
 			cout << "Nhap ten loai may bay: ";
 			string title;
 			getline(cin, title);
-			((Book *)_ls[found])->SetTitle(title);
+			((Flight *)_ls[found])->SetTitle(title);
 			break;
 		}
 		case 2:
@@ -381,7 +383,7 @@ void Airport::Edit(int option)
 			cout << "Nhap ma may bay: ";
 			string author;
 			getline(cin, author);
-			((Book *)_ls[found])->SetAuthor(author);
+			((Flight *)_ls[found])->SetAuthor(author);
 			break;
 		}
 		case 3:
@@ -390,7 +392,7 @@ void Airport::Edit(int option)
 			cout << "Nhap NXB: ";
 			string pub;
 			getline(cin, pub);
-			((Book *)_ls[found])->SetPublisher(pub);
+			((Flight *)_ls[found])->SetPublisher(pub);
 			break;
 		}
 		case 4:
@@ -401,10 +403,10 @@ void Airport::Edit(int option)
 			{
 				cout << "Nhap ma sach: ";
 				getline(cin, code);
-				if (Book::CheckBookCode(code))
+				if (Flight::CheckFlightCode(code))
 					break;
 			}
-			((Book *)_ls[found])->SetCode(code);
+			((Flight *)_ls[found])->SetCode(code);
 			break;
 		}
 		case 5:
@@ -415,24 +417,15 @@ void Airport::Edit(int option)
 			{
 				cout << "Nhap ISBN: ";
 				getline(cin, ISBN);
-				if (Book::CheckISBN(ISBN))
+				if (Flight::CheckISBN(ISBN))
 					break;
 			}
-			((Book *)_ls[found])->SetAuthor(ISBN);
+			((Flight *)_ls[found])->SetAuthor(ISBN);
 			break;
 		}
 		default:
 		{
-			cout << "\n\t===== Nhap thong tin can chinh sua =====" << endl;
-			double price = 0;
-			while (1)
-			{
-				cout << "Nhap gia sach: ";
-				cin >> price;
-				if (price > 0)
-					break;
-			}
-			((Book *)_ls[found])->SetPrice(price);
+			cout << "Vui long lua chon dung!!";
 			break;
 		}
 		}
@@ -441,7 +434,7 @@ void Airport::Edit(int option)
 	case 1:
 	{
 		TextColor(3);
-		cout << "\n0-Sua Tat Ca, 1-Ten Doc Gia, 2-ID, 3-Dia chi, 4-tuoi >> ";
+		cout << "\n0-Sua Tat Ca, 1-Ten, 2-ID, 3-Dia chi, 4-Tuoi >> ";
 		cin >> type;
 		if (cin.fail())
 			throw "Du lieu nhap khong la so";
@@ -458,7 +451,7 @@ void Airport::Edit(int option)
 		case 1:
 		{
 			cout << "\n\t===== Nhap thong tin can chinh sua =====" << endl;
-			cout << "Nhap ten doc gia: ";
+			cout << "Nhap ten nguoi mua: ";
 			string name;
 			getline(cin, name);
 			((Users *)_ls[found])->SetName(name);
@@ -470,7 +463,7 @@ void Airport::Edit(int option)
 			string ID;
 			while (1)
 			{
-				cout << "Nhap ID doc gia: ";
+				cout << "Nhap ID nguoi mua: ";
 				getline(cin, ID);
 				if (Users::CheckID(ID))
 					break;
@@ -481,7 +474,7 @@ void Airport::Edit(int option)
 		case 3:
 		{
 			cout << "\n\t===== Nhap thong tin can chinh sua =====" << endl;
-			cout << "Nhap Dia Chi Doc Gia: ";
+			cout << "Nhap dia chi nguoi mua: ";
 			string address;
 			getline(cin, address);
 			((Users *)_ls[found])->SetAddress(address);
@@ -493,7 +486,7 @@ void Airport::Edit(int option)
 			int age = 0;
 			while (1)
 			{
-				cout << "Nhap tuoi doc gia: ";
+				cout << "Nhap tuoi nguoi mua: ";
 				cin >> age;
 				if (age > 0)
 					break;
@@ -504,49 +497,49 @@ void Airport::Edit(int option)
 		}
 		break;
 	}
-	default:
-	{
-		TextColor(3);
-		cout << "\n0-Sua Tat Ca, 1-Nguoi Muon, 2-Ngay Muon >> ";
-		cin >> type;
-		if (cin.fail())
-			throw "Du lieu nhap khong la so";
-		cin.ignore();
-		TextColor(11);
-		switch (type)
-		{
-		case 0:
-		{
-			cout << "\n\t===== Nhap thong tin can chinh sua =====" << endl;
-			_ls[found]->Input();
-			break;
-		}
-		case 1:
-		{
-			cout << "\n\t===== Nhap thong tin can chinh sua =====" << endl;
-			Users r;
-			r.Input();
-			((BuyTicket *)_ls[found])->SetUsers(r);
-			break;
-		}
-		default:
-		{
-			cout << "\n\t===== Nhap thong tin can chinh sua =====" << endl;
-			Date date;
-			while (1)
-			{
-				cout << "Nhap ngay muon: ";
-				cin >> date;
-				if (date.validityCheck_Fix())
-					break;
-				cerr << "\nNgay nhap khong hop le !" << endl;
-			}
-			((BuyTicket *)_ls[found])->SetBorrowDate(date);
-			break;
-		}
-		}
-		break;
-	}
+		// default:
+		// {
+		// 	TextColor(3);
+		// 	cout << "\n0-Sua Tat Ca, 1-Nguoi Muon, 2-Ngay Muon >> ";
+		// 	cin >> type;
+		// 	if (cin.fail())
+		// 		throw "Du lieu nhap khong la so";
+		// 	cin.ignore();
+		// 	TextColor(11);
+		// 	switch (type)
+		// 	{
+		// 	case 0:
+		// 	{
+		// 		cout << "\n\t===== Nhap thong tin can chinh sua =====" << endl;
+		// 		_ls[found]->Input();
+		// 		break;
+		// 	}
+		// 	case 1:
+		// 	{
+		// 		cout << "\n\t===== Nhap thong tin can chinh sua =====" << endl;
+		// 		Users r;
+		// 		r.Input();
+		// 		((BuyTicket *)_ls[found])->SetUsers(r);
+		// 		break;
+		// 	}
+		// 	default:
+		// 	{
+		// 		cout << "\n\t===== Nhap thong tin can chinh sua =====" << endl;
+		// 		Date date;
+		// 		while (1)
+		// 		{
+		// 			cout << "Nhap ngay muon: ";
+		// 			cin >> date;
+		// 			if (date.validityCheck_Fix())
+		// 				break;
+		// 			cerr << "\nNgay nhap khong hop le !" << endl;
+		// 		}
+		// 		((BuyTicket *)_ls[found])->SetBorrowDate(date);
+		// 		break;
+		// 	}
+		// 	}
+		// 	break;
+		// }
 	}
 	OutputDataToFile(option);
 }
@@ -564,7 +557,7 @@ void Airport::HuyVe()
 	string ID;
 	while (1)
 	{
-		cout << "\nNhap ID nguoi muon: ";
+		cout << "\nNhap ID nguoi mua: ";
 		getline(cin, ID);
 		if (Users::CheckID(ID))
 			break;
@@ -575,7 +568,7 @@ void Airport::HuyVe()
 			founds.push_back(i);
 	if (founds.size() == 0)
 	{
-		cerr << "\n========== KHONG TIM THAY NGUOI MUON CO ID TREN =========" << endl;
+		cerr << "\n========== KHONG TIM THAY VE CO ID TREN =========" << endl;
 		return;
 	}
 
@@ -616,13 +609,13 @@ void Airport::HuyVe()
 		}
 		for (int i = 0; i < founds.size(); ++i)
 		{
-			int n = ((BuyTicket *)_ls[founds[i]])->GetBookList().size();
+			int n = ((BuyTicket *)_ls[founds[i]])->GetFlightList().size();
 			for (int j = 0; j < n; ++j)
 			{
 				if (((BuyTicket *)_ls[founds[i]])->GetReturned(j) == 0)
 				{
 					((BuyTicket *)_ls[founds[i]])->SetReturned(j, 1);
-					((BuyTicket *)_ls[founds[i]])->SetBookReturnDate(j, date);
+					((BuyTicket *)_ls[founds[i]])->SetFlightReturnDate(j, date);
 				}
 			}
 		}
@@ -630,20 +623,20 @@ void Airport::HuyVe()
 	else
 	{
 		cin.ignore();
-		string bookName;
+		string FlightName;
 		cout << "\nNhap ten sach can tra: ";
-		getline(cin, bookName);
+		getline(cin, FlightName);
 
-		vector<vector<Book>> bookList;
+		vector<vector<Flight>> FlightList;
 		for (int i = 0; i < founds.size(); ++i)
-			bookList.push_back(((BuyTicket *)_ls[founds[i]])->GetBookList());
+			FlightList.push_back(((BuyTicket *)_ls[founds[i]])->GetFlightList());
 		int pos_1 = -1;
 		int pos_2 = -1;
 		for (int i = 0; i < founds.size(); ++i)
 		{
-			for (int j = 0; j < bookList[i].size(); ++j)
+			for (int j = 0; j < FlightList[i].size(); ++j)
 			{
-				if (ToLower(bookList[i][j].GetTitle()) == ToLower(bookName))
+				if (ToLower(FlightList[i][j].GetTitle()) == ToLower(FlightName))
 				{
 					pos_1 = i;
 					pos_2 = j;
@@ -666,7 +659,7 @@ void Airport::HuyVe()
 			cerr << "\nNgay nhap khong hop le (Ngay tra >= ngay muon) !";
 		}
 		((BuyTicket *)_ls[founds[pos_1]])->SetReturned(pos_2, 1);
-		((BuyTicket *)_ls[founds[pos_1]])->SetBookReturnDate(pos_2, date);
+		((BuyTicket *)_ls[founds[pos_1]])->SetFlightReturnDate(pos_2, date);
 	}
 	cout << "\n========== TRA THANH CONG ==========" << endl;
 	//Luu lai file
@@ -693,9 +686,9 @@ void Airport::OverdueList()
 	{
 		int money_t = 0;
 		vector<int> returned = ((BuyTicket *)_ls[i])->GetReturned();
-		vector<Date> returnDate = ((BuyTicket *)_ls[i])->GetBookReturnDate();
+		vector<Date> returnDate = ((BuyTicket *)_ls[i])->GetFlightReturnDate();
 		Date borrowDate = ((BuyTicket *)_ls[i])->GetBorrowDate();
-		vector<Book> bookList = ((BuyTicket *)_ls[i])->GetBookList();
+		vector<Flight> FlightList = ((BuyTicket *)_ls[i])->GetFlightList();
 		//ngay muon toi da
 		borrowDate += 7;
 		bool overdue = false;
@@ -710,7 +703,7 @@ void Airport::OverdueList()
 				{
 					overdue = true;
 					nOver = returnDate[j] - borrowDate;
-					if (Book::IsVNBook(bookList[j].GetISBN()))
+					if (Flight::IsVNFlight(FlightList[j].GetISBN()))
 						money_t += OVERDUE_MONEY_VN_BOOK * nOver;
 					else
 						money_t += OVERDUE_MONEY_FOREIGN_BOOK * nOver;
@@ -723,7 +716,7 @@ void Airport::OverdueList()
 				{
 					overdue = true;
 					nOver = now - borrowDate;
-					if (Book::IsVNBook(bookList[j].GetISBN()))
+					if (Flight::IsVNFlight(FlightList[j].GetISBN()))
 						money_t += (OVERDUE_MONEY_VN_BOOK * nOver);
 					else
 						money_t += (OVERDUE_MONEY_FOREIGN_BOOK * nOver);

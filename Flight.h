@@ -3,7 +3,7 @@
 #define _BOOK_
 #include "AirportSystem.h"
 
-class Book : public AirportSystem
+class Flight : public AirportSystem
 {
 private:
 	string _title;
@@ -14,10 +14,10 @@ private:
 	double _price;
 
 public:
-	Book();
-	Book(const Book &book);
-	Book(const string &name, const string &author, const string &publisher, const string &code, const string &ISBN, double price);
-	~Book();
+	Flight();
+	Flight(const Flight &Flight);
+	Flight(const string &name, const string &author, const string &publisher, const string &code, const string &ISBN, double price);
+	~Flight();
 
 	string GetTitle() const;
 	string GetAuthor() const;
@@ -34,8 +34,8 @@ public:
 	void SetPrice(double price);
 
 	static bool CheckISBN(const string &ISBN);
-	static bool CheckBookCode(const string &code);
-	static bool IsVNBook(const string &ISBN);
+	static bool CheckFlightCode(const string &code);
+	static bool IsVNFlight(const string &ISBN);
 
 	void Input();
 	void Output();
@@ -44,7 +44,7 @@ public:
 	void InputFile(ifstream &input);
 	void OutputFile(ofstream &path);
 
-	Book &operator=(const Book &book);
-	friend ostream &operator<<(ostream &os, const Book &book);
+	Flight &operator=(const Flight &Flight);
+	friend ostream &operator<<(ostream &os, const Flight &Flight);
 };
 #endif

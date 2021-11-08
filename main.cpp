@@ -9,7 +9,7 @@ using namespace srilakshmikanthanp;
 void createDataFile()
 {
 	ofstream dataFile;
-	dataFile.open(BOOKS_DATA_PATH, ios::app);
+	dataFile.open(FLIGHT_DATA_PATH, ios::app);
 	dataFile.close();
 	dataFile.open(USERS_DATA_PATH, ios::app);
 	dataFile.close();

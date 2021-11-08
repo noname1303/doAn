@@ -62,10 +62,10 @@ void Display::ShowOptionMenu()
 	cout << "\n======== Hien thi thong tin ========";
 	gotoxy(PIVOT_X + 1, TITLE_Y + STEP_Y);
 	TextColor(OPTION_COLOR);
-	cout << "    May bay    ";
+	cout << "    Chuyen bay bay    ";
 
 	gotoxy(PIVOT_X + 1, TITLE_Y + 2 * STEP_Y);
-	cout << "   Chuyen bay  ";
+	cout << "   Nguoi mua  ";
 
 	gotoxy(PIVOT_X + 1, TITLE_Y + 3 * STEP_Y);
 	cout << " Ve ";
@@ -123,7 +123,7 @@ void Display::ControlShowOption()
 				if (option == 0)
 					cout << "\n======= DANH SACH MAY BAY =======";
 				else if (option == 1)
-					cout << "\n======= DANH SACH CHUYEN BAY =======";
+					cout << "\n======= DANH SACH NGUOI MUA  =======";
 				else
 					cout << "\n======= DANH SACH VE MAY BAY =======";
 				Airport aport;
@@ -152,7 +152,7 @@ int ReduceUpdateCode(const char *functionName)
 	TextColor(UPDATE_COLOR);
 	cout << "========== " << functionName << " ==========" << endl;
 	TextColor(10);
-	cout << "0 - MAY BAY, 1 - CHUYEN BAY, 2 - VE >> ";
+	cout << "0 - CHUYEN BAY, 1 - NGUOI MUA, 2 - VE >> ";
 	TextColor(7);
 	int type;
 	cin >> type;
@@ -276,10 +276,10 @@ void Display::SearchOptionMenu()
 
 	gotoxy(PIVOT_X + 1, TITLE_Y + STEP_Y);
 	TextColor(OPTION_COLOR);
-	cout << "      May bay      ";
+	cout << "      Chuyen bay      ";
 
 	gotoxy(PIVOT_X + 1, TITLE_Y + 2 * STEP_Y);
-	cout << "     Chuyen bay    ";
+	cout << "     Nguoi mua   ";
 
 	gotoxy(PIVOT_X + 1, TITLE_Y + 3 * STEP_Y);
 	cout << " Ve ";
@@ -338,7 +338,7 @@ void Display::ControlSearchOption()
 					system("cls");
 					ShowConsoleCursor(true);
 					TextColor(UPDATE_COLOR);
-					cout << "========== TIM KIEM MAY BAY ==========" << endl;
+					cout << "========== TIM KIEM CHUYEN BAY ==========" << endl;
 					TextColor(10);
 					cout << "Tim kiem bang (0 - Ten may bay, 1 - Ma hieu, 2 - ISBN) >> ";
 					TextColor(7);
@@ -367,7 +367,7 @@ void Display::ControlSearchOption()
 					system("cls");
 					ShowConsoleCursor(true);
 					TextColor(UPDATE_COLOR);
-					cout << "========== TIM KIEM CHUYEN BAY ==========" << endl;
+					cout << "========== TIM KIEM NGUOI MUA VE ==========" << endl;
 					TextColor(10);
 					cout << "Tim kiem bang (0 - Noi den/noi di, 1 - Ma hieu) >> ";
 					TextColor(7);
@@ -454,7 +454,7 @@ void Display::ControlReturnBookOption()
 	gotoxy(TITLE_X - 2, TITLE_Y);
 	TextColor(TITLE_COLOR);
 	ShowConsoleCursor(true);
-	cout << "======== He Thong Quan Ly Thu Vien - Tra Sach ========";
+	cout << "======== HUY VE ========";
 	TextColor(7);
 	Airport aport;
 	aport.HuyVe();
@@ -464,47 +464,44 @@ void Display::ControlReturnBookOption()
 }
 
 // ======== OVERDUE LIST OPTION ========= //
-void Display::ControlOverdueListOption()
-{
-	system("cls");
-	gotoxy(TITLE_X - 2, TITLE_Y);
-	TextColor(TITLE_COLOR);
-	ShowConsoleCursor(true);
-	cout << "======== He Thong Quan Ly Thu Vien - Danh sach qua han muon sach ========";
-	TextColor(7);
-	Airport aport;
-	aport.OverdueList();
-	TextColor(12);
-	cout << "\n<== Nhan phim bat ky de tiep tuc ==>" << endl;
-	_getch();
-}
+// void Display::ControlOverdueListOption()
+// {
+// 	system("cls");
+// 	gotoxy(TITLE_X - 2, TITLE_Y);
+// 	TextColor(TITLE_COLOR);
+// 	ShowConsoleCursor(true);
+// 	cout << "======== He Thong Quan Ly Thu Vien - Danh sach qua han muon sach ========";
+// 	TextColor(7);
+// 	Airport aport;
+// 	aport.OverdueList();
+// 	TextColor(12);
+// 	cout << "\n<== Nhan phim bat ky de tiep tuc ==>" << endl;
+// 	_getch();
+// }
 
 // ======== MAIN DISPLAY ======== //
 void Display::MainMenu()
 {
+	gotoxy(PIVOT_X, TITLE_Y - 10);
 	TextColor(TITLE_COLOR);
 	cout << figlet("San bay H-V-N");
 
-	gotoxy(PIVOT_X, TITLE_Y + 2 * STEP_Y);
+	gotoxy(PIVOT_X, TITLE_Y + STEP_Y);
 	TextColor(OPTION_COLOR);
 	cout << "  Hien Thi  ";
 
-	gotoxy(PIVOT_X, TITLE_Y + 3 * STEP_Y);
+	gotoxy(PIVOT_X, TITLE_Y + 2 * STEP_Y);
 	cout << "  Cap Nhat  ";
 
-	gotoxy(PIVOT_X, TITLE_Y + 4 * STEP_Y);
+	gotoxy(PIVOT_X, TITLE_Y + 3 * STEP_Y);
 	cout << "  Tim Kiem  ";
 
+	gotoxy(PIVOT_X, TITLE_Y + 4 * STEP_Y);
+	cout << "  Mua Ve ";
+
 	gotoxy(PIVOT_X, TITLE_Y + 5 * STEP_Y);
-	cout << "  Muon Sach ";
+	cout << "  Huy Ve ";
 
-	gotoxy(PIVOT_X, TITLE_Y + 6 * STEP_Y);
-	cout << "  Tra  Sach ";
-
-	gotoxy(PIVOT_X, TITLE_Y + 7 * STEP_Y);
-	cout << " DS Qua Han ";
-
-	gotoxy(PIVOT_X - 7, TITLE_Y + 8 * STEP_Y);
 	TextColor(4);
 	cout << "<== Nhan ESC de thoat ==>";
 }
@@ -583,19 +580,13 @@ void Display::DisplayMain()
 					DisplayMain();
 					return;
 				}
-				default:
-				{
-					ControlOverdueListOption();
-					DisplayMain();
-					return;
-				}
-				}
 				break;
-			}
+				}
 			case 27:
 				SayGoodBye();
 			}
+			}
+			DisplayCursor(pre_move, move);
 		}
-		DisplayCursor(pre_move, move);
 	}
 }

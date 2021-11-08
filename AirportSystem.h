@@ -11,7 +11,7 @@
 #include <fstream>
 #include <iomanip>
 
-#define BOOKS_DATA_PATH "book.txt"
+#define FLIGHT_DATA_PATH "flight.txt"
 #define USERS_DATA_PATH "users.txt"
 #define TICKET_DATA_PATH "ticket-bought.txt"
 #define NOT_FOUND -1
