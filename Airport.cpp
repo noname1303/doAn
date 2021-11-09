@@ -5,7 +5,7 @@ Airport::Airport()
 
 Airport::Airport(const Airport &aport)
 {
-	_ls = aport._ls;
+	_as = aport._as;
 }
 
 Airport::~Airport()
@@ -14,9 +14,9 @@ Airport::~Airport()
 
 AirportSystem *Airport::GetAirportSystem(int pos) const
 {
-	if (pos < 0 || pos >= _ls.size())
+	if (pos < 0 || pos >= _as.size())
 		throw "Vi tri truy cap khong hop le";
-	return _ls[pos];
+	return _as[pos];
 }
 
 bool Airport::IsExist(int option, AirportSystem *ls) const
@@ -25,14 +25,14 @@ bool Airport::IsExist(int option, AirportSystem *ls) const
 	{
 	case 0:
 	{
-		for (int i = 0; i < _ls.size(); ++i)
-			if (((Flight *)ls)->GetISBN() == ((Flight *)_ls[i])->GetISBN())
+		for (int i = 0; i < _as.size(); ++i)
+			if (((Flight *)ls)->GetISFC() == ((Flight *)_as[i])->GetISFC())
 				return true;
 	}
 	case 1:
 	{
-		for (int i = 0; i < _ls.size(); ++i)
-			if (((Users *)ls)->GetID() == ((Users *)_ls[i])->GetID())
+		for (int i = 0; i < _as.size(); ++i)
+			if (((Users *)ls)->GetID() == ((Users *)_as[i])->GetID())
 				return true;
 	}
 	default:
@@ -62,7 +62,7 @@ void Airport::LoadDataFromFile(int option)
 			ls->InputFile(input);
 			if (input.eof())
 				break;
-			_ls.push_back(ls);
+			_as.push_back(ls);
 			input.ignore();
 		}
 		break;
@@ -81,7 +81,7 @@ void Airport::LoadDataFromFile(int option)
 			ls->InputFile(input);
 			if (input.eof())
 				break;
-			_ls.push_back(ls);
+			_as.push_back(ls);
 			input.ignore();
 		}
 		break;
@@ -100,7 +100,7 @@ void Airport::LoadDataFromFile(int option)
 			ls->InputFile(input);
 			if (input.eof())
 				break;
-			_ls.push_back(ls);
+			_as.push_back(ls);
 			input.ignore();
 		}
 		break;
@@ -132,20 +132,20 @@ void Airport::OutputDataToFile(int option)
 	}
 	if (out.fail())
 		throw "Loi doc file";
-	for (int i = 0; i < _ls.size(); ++i)
-		_ls[i]->OutputFile(out);
+	for (int i = 0; i < _as.size(); ++i)
+		_as[i]->OutputFile(out);
 	out.close();
 }
 
 void Airport::Show(int option)
 {
 	LoadDataFromFile(option);
-	for (int i = 0; i < _ls.size(); ++i)
+	for (int i = 0; i < _as.size(); ++i)
 	{
 		TextColor(SHOW_COLOR);
 		cout << "\n========== STT " << i + 1 << " ==========";
 		TextColor(7);
-		_ls[i]->Output();
+		_as[i]->Output();
 	}
 }
 
@@ -197,10 +197,10 @@ void Airport::Add(int option)
 			throw "Khong the cap phat bo nho";
 		fflush(stdin);
 		bt->Input();
-		for (int i = 0; i < _ls.size(); ++i)
-			if (((BuyTicket *)bt)->GetUsers().GetID() == ((BuyTicket *)_ls[i])->GetUsers().GetID())
+		for (int i = 0; i < _as.size(); ++i)
+			if (((BuyTicket *)bt)->GetUsers().GetID() == ((BuyTicket *)_as[i])->GetUsers().GetID())
 			{
-				if (((BuyTicket *)bt)->GetUsers() == ((BuyTicket *)_ls[i])->GetUsers())
+				if (((BuyTicket *)bt)->GetUsers() == ((BuyTicket *)_as[i])->GetUsers())
 					bt->OutputFile(output);
 				else
 					cerr << "\n=== ERROR: Trung ID nhung khac thong tin ===" << endl;
@@ -217,6 +217,7 @@ void Airport::Add(int option)
 void Airport::Delete(int option)
 {
 	int found;
+	char confirm[4];
 	if (option == 0)
 		found = Search(option, 3);
 	else if (option == 1)
@@ -228,7 +229,14 @@ void Airport::Delete(int option)
 		cout << "\n========= KHONG TIM THAY TRONG DANH SACH  ==========" << endl;
 		return;
 	}
-	_ls.erase(_ls.begin() + found);
+	cout << "Nhan \"yes\" de xac nhan xoa may bay nay: ";
+	cin >> confirm;
+
+	if (strcmp(confirm, "yes") == 0)
+	{
+
+		_as.erase(_as.begin() + found);
+	}
 	cout << "\n========= XOA THANH CONG ==========" << endl;
 	OutputDataToFile(option);
 }
@@ -251,8 +259,8 @@ int Airport::Search(int option, int type)
 			string title;
 			cin.ignore();
 			getline(cin, title);
-			for (int i = 0; i < _ls.size(); ++i)
-				if (ToLower(((Flight *)_ls[i])->GetMaChuyenBay()) == ToLower(title))
+			for (int i = 0; i < _as.size(); ++i)
+				if (ToLower(((Flight *)_as[i])->GetMaChuyenBay()) == ToLower(title))
 					return i;
 			return NOT_FOUND;
 		}
@@ -268,25 +276,25 @@ int Airport::Search(int option, int type)
 				if (Flight::CheckFlightCode(code))
 					break;
 			}
-			for (int i = 0; i < _ls.size(); ++i)
-				if (ToLower(((Flight *)_ls[i])->GetCode()) == ToLower(code))
+			for (int i = 0; i < _as.size(); ++i)
+				if (ToLower(((Flight *)_as[i])->GetCode()) == ToLower(code))
 					return i;
 			return NOT_FOUND;
 		}
 		default:
 		{
-			//search by ISBN
-			string ISBN;
+			//search by ISFC
+			string ISFC;
 			cin.ignore();
 			while (1)
 			{
-				cout << "\nNhap ma ISBN-13: ";
-				getline(cin, ISBN);
-				if (Flight::CheckISBN(ISBN))
+				cout << "\nNhap ma ISFC-9: ";
+				getline(cin, ISFC);
+				if (Flight::CheckFC(ISFC))
 					break;
 			}
-			for (int i = 0; i < _ls.size(); ++i)
-				if (ToLower(((Flight *)_ls[i])->GetISBN()) == ToLower(ISBN))
+			for (int i = 0; i < _as.size(); ++i)
+				if (ToLower(((Flight *)_as[i])->GetISFC()) == ToLower(ISFC))
 					return i;
 			return NOT_FOUND;
 		}
@@ -303,8 +311,8 @@ int Airport::Search(int option, int type)
 			string name;
 			cin.ignore();
 			getline(cin, name);
-			for (int i = 0; i < _ls.size(); ++i)
-				if (ToLower(((Users *)_ls[i])->GetName()) == ToLower(name))
+			for (int i = 0; i < _as.size(); ++i)
+				if (ToLower(((Users *)_as[i])->GetName()) == ToLower(name))
 					return i;
 			return NOT_FOUND;
 		}
@@ -315,8 +323,8 @@ int Airport::Search(int option, int type)
 			string ID;
 			cin.ignore();
 			getline(cin, ID);
-			for (int i = 0; i < _ls.size(); ++i)
-				if (ToLower(((Users *)_ls[i])->GetID()) == ToLower(ID))
+			for (int i = 0; i < _as.size(); ++i)
+				if (ToLower(((Users *)_as[i])->GetID()) == ToLower(ID))
 					return i;
 			return NOT_FOUND;
 		}
@@ -327,10 +335,10 @@ int Airport::Search(int option, int type)
 		cout << "\nNhap ten (ID) nguoi mua ve: ";
 		string name_ID;
 		getline(cin, name_ID);
-		for (int i = 0; i < _ls.size(); ++i)
+		for (int i = 0; i < _as.size(); ++i)
 		{
-			string r_name = ((BuyTicket *)_ls[i])->GetUsers().GetName();
-			string r_ID = ((BuyTicket *)_ls[i])->GetUsers().GetID();
+			string r_name = ((BuyTicket *)_as[i])->GetUsers().GetName();
+			string r_ID = ((BuyTicket *)_as[i])->GetUsers().GetID();
 			if (ToLower(r_name) == ToLower(name_ID) || r_ID == name_ID)
 				return i;
 		}
@@ -353,7 +361,7 @@ void Airport::Edit(int option)
 	case 0:
 	{
 		TextColor(3);
-		cout << "\n0-Sua Tat Ca, 1-Loai may bay, 2-Ma hieu may bay, 3-SoGhe, 4-So Day, 5-ISBN, >> ";
+		cout << "\n0-Sua Tat Ca, 1-Loai may bay, 2-Ma hieu may bay, 3-SoGhe, 4-So Day, 5-ISFC, >> ";
 		cin >> type;
 		if (cin.fail())
 			throw "Du lieu nhap khong la so";
@@ -364,7 +372,7 @@ void Airport::Edit(int option)
 		case 0:
 		{
 			cout << "\n\t===== Nhap thong tin can chinh sua =====" << endl;
-			_ls[found]->Input();
+			_as[found]->Input();
 			break;
 		}
 		case 1:
@@ -373,7 +381,7 @@ void Airport::Edit(int option)
 			cout << "Nhap ten loai may bay: ";
 			string title;
 			getline(cin, title);
-			((Flight *)_ls[found])->SetTitle(title);
+			((Flight *)_as[found])->SetTitle(title);
 			break;
 		}
 		case 2:
@@ -382,16 +390,16 @@ void Airport::Edit(int option)
 			cout << "Nhap ma may bay: ";
 			string author;
 			getline(cin, author);
-			((Flight *)_ls[found])->SetAuthor(author);
+			((Flight *)_as[found])->SetAuthor(author);
 			break;
 		}
 		case 3:
 		{
 			cout << "\n\t===== Nhap thong tin can chinh sua =====" << endl;
-			cout << "Nhap NXB: ";
+			cout << "So day: ";
 			string pub;
 			getline(cin, pub);
-			((Flight *)_ls[found])->SetPublisher(pub);
+			((Flight *)_as[found])->SetPublisher(pub);
 			break;
 		}
 		case 4:
@@ -400,26 +408,26 @@ void Airport::Edit(int option)
 			string code;
 			while (1)
 			{
-				cout << "Nhap ma sach: ";
+				cout << "So ghe: ";
 				getline(cin, code);
 				if (Flight::CheckFlightCode(code))
 					break;
 			}
-			((Flight *)_ls[found])->SetCode(code);
+			((Flight *)_as[found])->SetCode(code);
 			break;
 		}
 		case 5:
 		{
 			cout << "\n\t===== Nhap thong tin can chinh sua =====" << endl;
-			string ISBN;
+			string ISFC;
 			while (1)
 			{
-				cout << "Nhap ISBN: ";
-				getline(cin, ISBN);
-				if (Flight::CheckISBN(ISBN))
+				cout << "Nhap ISFC: ";
+				getline(cin, ISFC);
+				if (Flight::CheckFC(ISFC))
 					break;
 			}
-			((Flight *)_ls[found])->SetAuthor(ISBN);
+			((Flight *)_as[found])->SetAuthor(ISFC);
 			break;
 		}
 		default:
@@ -444,7 +452,7 @@ void Airport::Edit(int option)
 		case 0:
 		{
 			cout << "\n\t===== Nhap thong tin can chinh sua =====" << endl;
-			_ls[found]->Input();
+			_as[found]->Input();
 			break;
 		}
 		case 1:
@@ -453,7 +461,7 @@ void Airport::Edit(int option)
 			cout << "Nhap ten nguoi mua: ";
 			string name;
 			getline(cin, name);
-			((Users *)_ls[found])->SetName(name);
+			((Users *)_as[found])->SetName(name);
 			break;
 		}
 		case 2:
@@ -467,7 +475,7 @@ void Airport::Edit(int option)
 				if (Users::CheckID(ID))
 					break;
 			}
-			((Users *)_ls[found])->SetID(ID);
+			((Users *)_as[found])->SetID(ID);
 			break;
 		}
 		case 3:
@@ -476,7 +484,7 @@ void Airport::Edit(int option)
 			cout << "Nhap dia chi nguoi mua: ";
 			string address;
 			getline(cin, address);
-			((Users *)_ls[found])->SetAddress(address);
+			((Users *)_as[found])->SetAddress(address);
 			break;
 		}
 		default:
@@ -490,7 +498,7 @@ void Airport::Edit(int option)
 				if (age > 0)
 					break;
 			}
-			((Users *)_ls[found])->SetAge(age);
+			((Users *)_as[found])->SetAge(age);
 			break;
 		}
 		}
@@ -510,7 +518,7 @@ void Airport::Edit(int option)
 		// 	case 0:
 		// 	{
 		// 		cout << "\n\t===== Nhap thong tin can chinh sua =====" << endl;
-		// 		_ls[found]->Input();
+		// 		_as[found]->Input();
 		// 		break;
 		// 	}
 		// 	case 1:
@@ -518,7 +526,7 @@ void Airport::Edit(int option)
 		// 		cout << "\n\t===== Nhap thong tin can chinh sua =====" << endl;
 		// 		Users r;
 		// 		r.Input();
-		// 		((BuyTicket *)_ls[found])->SetUsers(r);
+		// 		((BuyTicket *)_as[found])->SetUsers(r);
 		// 		break;
 		// 	}
 		// 	default:
@@ -533,7 +541,7 @@ void Airport::Edit(int option)
 		// 				break;
 		// 			cerr << "\nNgay nhap khong hop le !" << endl;
 		// 		}
-		// 		((BuyTicket *)_ls[found])->SetBorrowDate(date);
+		// 		((BuyTicket *)_as[found])->SetBorrowDate(date);
 		// 		break;
 		// 	}
 		// 	}
@@ -543,12 +551,12 @@ void Airport::Edit(int option)
 	OutputDataToFile(option);
 }
 
-void Airport::MuaVe()
+void Airport::BuyTickets()
 {
-	this->Add(3);
+	this->Add(2);
 }
 
-void Airport::HuyVe()
+void Airport::CancelTickets()
 {
 	LoadDataFromFile(3);
 
@@ -556,14 +564,14 @@ void Airport::HuyVe()
 	string ID;
 	while (1)
 	{
-		cout << "\nNhap ID nguoi mua: ";
+		cout << "\nNhap CNMD nguoi mua bao gồm 9 chữ số: ";
 		getline(cin, ID);
-		if (Users::CheckID(ID))
+		if (ID.length() != 9 && Users::CheckID(ID))
 			break;
 	}
 	vector<int> founds;
-	for (int i = 0; i < _ls.size(); ++i)
-		if (((BuyTicket *)_ls[i])->GetUsers().GetID() == ID)
+	for (int i = 0; i < _as.size(); ++i)
+		if (((BuyTicket *)_as[i])->GetUsers().GetID() == ID)
 			founds.push_back(i);
 	if (founds.size() == 0)
 	{
@@ -590,7 +598,7 @@ void Airport::HuyVe()
 			{
 				for (int i = 0; i < founds.size(); ++i)
 				{
-					if (((BuyTicket *)_ls[founds[i]])->GetBorrowDate() > date)
+					if (((BuyTicket *)_as[founds[i]])->GetBorrowDate() > date)
 					{
 						cerr << "\nNgay nhap khong hop le (Ngay tra >= ngay muon) !";
 						check = false;
@@ -608,13 +616,13 @@ void Airport::HuyVe()
 		}
 		for (int i = 0; i < founds.size(); ++i)
 		{
-			int n = ((BuyTicket *)_ls[founds[i]])->GetFlightList().size();
+			int n = ((BuyTicket *)_as[founds[i]])->GetFlightList().size();
 			for (int j = 0; j < n; ++j)
 			{
-				if (((BuyTicket *)_ls[founds[i]])->GetReturned(j) == 0)
+				if (((BuyTicket *)_as[founds[i]])->GetReturned(j) == 0)
 				{
-					((BuyTicket *)_ls[founds[i]])->SetReturned(j, 1);
-					((BuyTicket *)_ls[founds[i]])->SetFlightReturnDate(j, date);
+					((BuyTicket *)_as[founds[i]])->SetReturned(j, 1);
+					((BuyTicket *)_as[founds[i]])->SetFlightReturnDate(j, date);
 				}
 			}
 		}
@@ -628,7 +636,7 @@ void Airport::HuyVe()
 
 		vector<vector<Flight>> FlightList;
 		for (int i = 0; i < founds.size(); ++i)
-			FlightList.push_back(((BuyTicket *)_ls[founds[i]])->GetFlightList());
+			FlightList.push_back(((BuyTicket *)_as[founds[i]])->GetFlightList());
 		int pos_1 = -1;
 		int pos_2 = -1;
 		for (int i = 0; i < founds.size(); ++i)
@@ -653,124 +661,124 @@ void Airport::HuyVe()
 		{
 			cout << "\nNhap ngay tra: ";
 			cin >> date;
-			if (date.validityCheck_Fix() == true && date >= ((BuyTicket *)_ls[founds[pos_1]])->GetBorrowDate())
+			if (date.validityCheck_Fix() == true && date >= ((BuyTicket *)_as[founds[pos_1]])->GetBorrowDate())
 				break;
 			cerr << "\nNgay nhap khong hop le (Ngay tra >= ngay muon) !";
 		}
-		((BuyTicket *)_ls[founds[pos_1]])->SetReturned(pos_2, 1);
-		((BuyTicket *)_ls[founds[pos_1]])->SetFlightReturnDate(pos_2, date);
+		((BuyTicket *)_as[founds[pos_1]])->SetReturned(pos_2, 1);
+		((BuyTicket *)_as[founds[pos_1]])->SetFlightReturnDate(pos_2, date);
 	}
 	cout << "\n========== TRA THANH CONG ==========" << endl;
 	//Luu lai file
 	OutputDataToFile(3);
 }
 
-void Airport::OverdueList()
-{
-	LoadDataFromFile(3);
-	Date now;
-	while (1)
-	{
-		cout << "\nNhap ngay can thong ke: ";
-		cin >> now;
-		if (now.validityCheck_Fix())
-			break;
-		cerr << "\nNgay nhap khog hop le !";
-	}
-	vector<Users> overdueUsers;
-	vector<int> money;
+// void Airport::OverdueList()
+// {
+// 	LoadDataFromFile(3);
+// 	Date now;
+// 	while (1)
+// 	{
+// 		cout << "\nNhap ngay can thong ke: ";
+// 		cin >> now;
+// 		if (now.validityCheck_Fix())
+// 			break;
+// 		cerr << "\nNgay nhap khog hop le !";
+// 	}
+// 	vector<Users> overdueUsers;
+// 	vector<int> money;
 
-	//liet ke nhung doc gia muon sach qua han
-	for (int i = 0; i < _ls.size(); ++i)
-	{
-		int money_t = 0;
-		vector<int> returned = ((BuyTicket *)_ls[i])->GetReturned();
-		vector<Date> returnDate = ((BuyTicket *)_ls[i])->GetFlightReturnDate();
-		Date borrowDate = ((BuyTicket *)_ls[i])->GetBorrowDate();
-		vector<Flight> FlightList = ((BuyTicket *)_ls[i])->GetFlightList();
-		//ngay muon toi da
-		borrowDate += 7;
-		bool overdue = false;
+// 	//liet ke nhung doc gia muon sach qua han
+// 	for (int i = 0; i < _as.size(); ++i)
+// 	{
+// 		int money_t = 0;
+// 		vector<int> returned = ((BuyTicket *)_as[i])->GetReturned();
+// 		vector<Date> returnDate = ((BuyTicket *)_as[i])->GetFlightReturnDate();
+// 		Date borrowDate = ((BuyTicket *)_as[i])->GetBorrowDate();
+// 		vector<Flight> FlightList = ((BuyTicket *)_as[i])->GetFlightList();
+// 		//ngay muon toi da
+// 		borrowDate += 7;
+// 		bool overdue = false;
 
-		for (int j = 0; j < returned.size(); ++j)
-		{
-			//sach da tra
-			int nOver = 0;
-			if (returned[j] != 0)
-			{
-				if (borrowDate < returnDate[j])
-				{
-					overdue = true;
-					nOver = returnDate[j] - borrowDate;
-					if (Flight::IsVNFlight(FlightList[j].GetISBN()))
-						money_t += OVERDUE_MONEY_VN_BOOK * nOver;
-					else
-						money_t += OVERDUE_MONEY_FOREIGN_BOOK * nOver;
-				}
-			}
-			//sach chua tra
-			else
-			{
-				if (borrowDate < now)
-				{
-					overdue = true;
-					nOver = now - borrowDate;
-					if (Flight::IsVNFlight(FlightList[j].GetISBN()))
-						money_t += (OVERDUE_MONEY_VN_BOOK * nOver);
-					else
-						money_t += (OVERDUE_MONEY_FOREIGN_BOOK * nOver);
-				}
-			}
-		}
-		if (overdue == true)
-		{
-			overdueUsers.push_back(((BuyTicket *)_ls[i])->GetUsers());
-			money.push_back(money_t);
-		}
-	}
+// 		for (int j = 0; j < returned.size(); ++j)
+// 		{
+// 			//sach da tra
+// 			int nOver = 0;
+// 			if (returned[j] != 0)
+// 			{
+// 				if (borrowDate < returnDate[j])
+// 				{
+// 					overdue = true;
+// 					nOver = returnDate[j] - borrowDate;
+// 					if (Flight::IsVNFlight(FlightList[j].GetISFC()))
+// 						money_t += OVERDUE_MONEY_VN_BOOK * nOver;
+// 					else
+// 						money_t += OVERDUE_MONEY_FOREIGN_BOOK * nOver;
+// 				}
+// 			}
+// 			//sach chua tra
+// 			else
+// 			{
+// 				if (borrowDate < now)
+// 				{
+// 					overdue = true;
+// 					nOver = now - borrowDate;
+// 					if (Flight::IsVNFlight(FlightList[j].GetISFC()))
+// 						money_t += (OVERDUE_MONEY_VN_BOOK * nOver);
+// 					else
+// 						money_t += (OVERDUE_MONEY_FOREIGN_BOOK * nOver);
+// 				}
+// 			}
+// 		}
+// 		if (overdue == true)
+// 		{
+// 			overdueUsers.push_back(((BuyTicket *)_as[i])->GetUsers());
+// 			money.push_back(money_t);
+// 		}
+// 	}
 
-	if (overdueUsers.size() == 0)
-	{
-		TextColor(3);
-		cout << "\n========== KHONG CO DOC GIA NAO MUON SACH QUA HAN ==========\n";
-		return;
-	}
+// 	if (overdueUsers.size() == 0)
+// 	{
+// 		TextColor(3);
+// 		cout << "\n========== KHONG CO DOC GIA NAO MUON SACH QUA HAN ==========\n";
+// 		return;
+// 	}
 
-	//Merge doc gia bi trung
-	vector<Users> RE_result;
-	vector<int> MO_result;
-	RE_result.push_back(overdueUsers[0]);
-	MO_result.push_back(money[0]);
+// 	//Merge doc gia bi trung
+// 	vector<Users> RE_result;
+// 	vector<int> MO_result;
+// 	RE_result.push_back(overdueUsers[0]);
+// 	MO_result.push_back(money[0]);
 
-	for (int i = 1; i < overdueUsers.size(); ++i)
-	{
-		bool check = true;
-		for (int j = 0; j < RE_result.size(); ++j)
-		{
-			if (overdueUsers[i].GetID() == RE_result[j].GetID())
-			{
-				MO_result[j] += money[i];
-				check = false;
-				break;
-			}
-		}
-		if (check)
-		{
-			RE_result.push_back(overdueUsers[i]);
-			MO_result.push_back(money[i]);
-		}
-	}
+// 	for (int i = 1; i < overdueUsers.size(); ++i)
+// 	{
+// 		bool check = true;
+// 		for (int j = 0; j < RE_result.size(); ++j)
+// 		{
+// 			if (overdueUsers[i].GetID() == RE_result[j].GetID())
+// 			{
+// 				MO_result[j] += money[i];
+// 				check = false;
+// 				break;
+// 			}
+// 		}
+// 		if (check)
+// 		{
+// 			RE_result.push_back(overdueUsers[i]);
+// 			MO_result.push_back(money[i]);
+// 		}
+// 	}
 
-	TextColor(6);
-	cout << "\n=============== DANH SACH MUON SACH QUA HAN ================" << endl;
-	TextColor(3);
-	cout << "====> Co " << RE_result.size() << " doc gia muon sach qua han" << endl;
-	for (int i = 0; i < RE_result.size(); ++i)
-	{
-		TextColor(10);
-		cout << "========= STT " << i + 1 << " =========" << endl;
-		TextColor(7);
-		RE_result[i].Output();
-		cout << "\n==> So tien phat: " << MO_result[i] << endl;
-	}
-}
+// 	TextColor(6);
+// 	cout << "\n=============== DANH SACH MUON SACH QUA HAN ================" << endl;
+// 	TextColor(3);
+// 	cout << "====> Co " << RE_result.size() << " doc gia muon sach qua han" << endl;
+// 	for (int i = 0; i < RE_result.size(); ++i)
+// 	{
+// 		TextColor(10);
+// 		cout << "========= STT " << i + 1 << " =========" << endl;
+// 		TextColor(7);
+// 		RE_result[i].Output();
+// 		cout << "\n==> So tien phat: " << MO_result[i] << endl;
+// 	}
+// }

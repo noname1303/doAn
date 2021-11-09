@@ -15,8 +15,8 @@
 #define USERS_DATA_PATH "users.txt"
 #define TICKET_DATA_PATH "ticket-bought.txt"
 #define NOT_FOUND -1
-#define EAN_13 "978"
-#define _EAN_13 "979"
+#define FLIGHT_CODE_9 "VJA"
+#define _FLIGHT_CODE_9 "VNA"
 #define ISBN_VN "604"
 #define OVERDUE_MONEY_VN_BOOK 10000
 #define OVERDUE_MONEY_FOREIGN_BOOK 20000

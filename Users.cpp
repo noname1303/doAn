@@ -65,6 +65,7 @@ void Users::SetAge(int age)
 
 bool Users::CheckID(const string &ID)
 {
+
 	for (int i = 0; i < ID.length(); ++i)
 		if (ID[i] < '0' || ID[i] > '9')
 		{

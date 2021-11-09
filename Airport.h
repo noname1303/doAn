@@ -11,7 +11,7 @@
 class Airport
 {
 private:
-	vector<AirportSystem *> _ls;
+	vector<AirportSystem *> _as;
 
 public:
 	Airport();
@@ -20,7 +20,7 @@ public:
 
 	AirportSystem *GetAirportSystem(int pos) const;
 
-	bool IsExist(int option, AirportSystem *ls) const;
+	bool IsExist(int option, AirportSystem *as) const;
 	void LoadDataFromFile(int option); //0- may bay, 1-chuyen bay, 2-ve
 	void OutputDataToFile(int option);
 	void Add(int option);
@@ -28,9 +28,9 @@ public:
 	void Show(int option);
 	int Search(int option, int type);
 	void Edit(int option);
-	void MuaVe();
-	void HuyVe();
-	void OverdueList();
+	void BuyTickets();
+	void CancelTickets();
+	// void OverdueList();
 };
 
 #endif

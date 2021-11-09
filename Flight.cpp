@@ -1,28 +1,29 @@
 #include "Flight.h"
 Flight::Flight()
 {
-	_maChuyenBay = "";
+	// _maChuyenBay = "";
+	_code = "";
 	_noiDen = "";
 	_noiDi = "";
-	_ISBN = "";
+	_ISFC = "";
 	_price = 0;
 }
 Flight::Flight(const Flight &Flight)
 {
-	_maChuyenBay = Flight._maChuyenBay;
+	// _maChuyenBay = Flight._maChuyenBay;
 	_noiDen = Flight._noiDen;
 	_noiDi = Flight._noiDi;
 	_code = Flight._code;
-	_ISBN = Flight._ISBN;
+	_ISFC = Flight._ISFC;
 	_price = Flight._price;
 }
-Flight::Flight(const string &name, const string &noiDen, const string &noiDi, const string &code, const string &ISBN, double price)
+Flight::Flight(const string &name, const string &noiDen, const string &noiDi, const string &code, const string &ISFC, double price)
 {
-	_maChuyenBay = name;
+	// _maChuyenBay = name;
 	_noiDen = noiDen;
 	_noiDi = noiDi;
-	_code = code;
-	_ISBN = ISBN;
+	_code = name;
+	_ISFC = ISFC;
 	if (price < 0)
 		_price = 0;
 	else
@@ -40,9 +41,9 @@ string Flight::GetCode() const
 {
 	return _code;
 }
-string Flight::GetISBN() const
+string Flight::GetISFC() const
 {
-	return _ISBN;
+	return _ISFC;
 }
 string Flight::GetNoiDi() const
 {
@@ -77,10 +78,10 @@ void Flight::SetCode(const string &code)
 	if (CheckFlightCode(code))
 		_code = code;
 }
-void Flight::SetISBN(const string &ISBN)
+void Flight::SetISFC(const string &ISFC)
 {
-	if (CheckISBN(ISBN))
-		_ISBN = ISBN;
+	if (CheckFC(ISFC))
+		_ISFC = ISFC;
 }
 void Flight::SetPrice(double price)
 {
@@ -88,29 +89,23 @@ void Flight::SetPrice(double price)
 		_price = price;
 }
 
-bool Flight::CheckISBN(const string &ISBN)
+bool Flight::CheckFC(const string &ISFC)
 {
-	if (IsEmpty(ISBN))
+	if (IsEmpty(ISFC))
 		return false;
 
-	if (ISBN.length() != 13)
+	if (ISFC.length() != 9)
 	{
-		cerr << "\nMa ISBN gom 13 chu so !";
+		cerr << "\nMa ISFC gom 9 ki tu!";
 		return false;
 	}
 	string check;
-	check = check + ISBN[0] + ISBN[1] + ISBN[2];
-	if (check != _EAN_13 && check != EAN_13)
+	check = check + ISFC[0] + ISFC[1] + ISFC[2];
+	if (check != FLIGHT_CODE_9 && check != _FLIGHT_CODE_9)
 	{
-		cerr << "\nMa ISBN-13 bat dau bang 978 hoac 979 !";
+		cerr << "\nMa ISFC-9 bat dau bang VJA hoac VNA !";
 		return false;
 	}
-	for (int i = 0; i < ISBN.length(); ++i)
-		if (ISBN[i] > '9' || ISBN[i] < '0')
-		{
-			cerr << "\nMa ISBN phai la nhung chu so 0-9 !";
-			return false;
-		}
 	return true;
 }
 bool Flight::CheckFlightCode(const string &code)
@@ -118,22 +113,22 @@ bool Flight::CheckFlightCode(const string &code)
 	for (int i = 0; i < code.length(); ++i)
 		if (code[i] > '9' || code[i] < '0')
 		{
-			cerr << "\nMa Sach phai la nhung chu so 0-9 !";
+			cerr << "\nMa chuyen bay phai la nhung chu so 0-9 !";
 			return false;
 		}
 	return true;
 }
-bool Flight::IsVNFlight(const string &ISBN)
-{
-	if (CheckISBN(ISBN))
-		if (ISBN.substr(3, 3) == ISBN_VN)
-			return true;
-	return false;
-}
+// bool Flight::IsVNFlight(const string &ISFC)
+// {
+// 	if (CheckFC(ISFC))
+// 		if (ISFC.substr(3, 3) == ISFC_VN)
+// 			return true;
+// 	return false;
+// }
 
-string Flight::FormatISBN() const
+string Flight::FormatISFC() const
 {
-	string res = _ISBN;
+	string res = _ISFC;
 	res.insert(3, "-");
 	return res;
 }
@@ -141,44 +136,45 @@ void Flight::Input()
 {
 	while (1)
 	{
-		cout << "\nMa hieu may bay: ";
-		getline(cin, _maChuyenBay);
-		if (!IsEmpty(_maChuyenBay))
-			break;
-	}
-	while (1)
-	{
-		cout << "\nNhap loai may bay:";
-		getline(cin, _noiDen);
-		if (!IsEmpty(_noiDen))
-			break;
-	}
-	while (1)
-	{
-		cout << "\nNhap so day: ";
-		getline(cin, _noiDi);
-		if (!IsEmpty(_noiDi))
-			break;
-	}
-	while (1)
-	{
-		cout << "\nNhap so ghe: ";
+		cout << "\nNhap ma chuyen bay: ";
 		getline(cin, _code);
 		if (!IsEmpty(_code))
 			break;
 		if (CheckFlightCode(_code))
 			break;
 	}
+	// while (1)
+	// {
+	// 	cout << "\nMa hieu may bay: ";
+	// 	getline(cin, _maChuyenBay);
+	// 	if (!IsEmpty(_maChuyenBay))
+	// 		break;
+	// }
 	while (1)
 	{
-		cout << "\nNhap ISBN-13: ";
-		getline(cin, _ISBN);
-		if (CheckISBN(_ISBN))
+		cout << "\nNhap noi den:";
+		getline(cin, _noiDen);
+		if (!IsEmpty(_noiDen))
 			break;
 	}
 	while (1)
 	{
-		cout << "\nNhap gia sach: ";
+		cout << "\nNhap noi di: ";
+		getline(cin, _noiDi);
+		if (!IsEmpty(_noiDi))
+			break;
+	}
+
+	while (1)
+	{
+		cout << "\nNhap ISFC-9: ";
+		getline(cin, _ISFC);
+		if (CheckFC(_ISFC))
+			break;
+	}
+	while (1)
+	{
+		cout << "\nNhap gia ve: ";
 		cin >> _price;
 		if (cin.fail())
 		{
@@ -192,51 +188,51 @@ void Flight::Input()
 }
 void Flight::Output()
 {
-	cout << "\nTen sach: " << _maChuyenBay;
-	cout << "\nTac gia: " << _noiDen;
-	cout << "\nNXB: " << _noiDi;
-	cout << "\nMa sach: " << _code;
-	cout << "\nISBN: " << FormatISBN();
-	cout << "\nGia sach: " << setprecision(10) << _price;
+	cout << "\nMa Chuyen Bay: " << _code;
+	cout << "\nNoi den: " << _noiDen;
+	cout << "\nNoi di: " << _noiDi;
+	// cout << "\nCode: " << _code;
+	cout << "\nISFC: " << FormatISFC();
+	cout << "\nGia ve: " << setprecision(10) << _price;
 }
 
 void Flight::InputFile(ifstream &input)
 {
-	getline(input, _maChuyenBay);
+	// getline(input, _maChuyenBay);
 	getline(input, _noiDen);
 	getline(input, _noiDi);
 	getline(input, _code);
-	getline(input, _ISBN);
+	getline(input, _ISFC);
 	input >> _price;
 }
 void Flight::OutputFile(ofstream &out)
 {
-	out << _maChuyenBay << endl;
+	// out << _maChuyenBay << endl;
 	out << _noiDen << endl;
 	out << _noiDi << endl;
 	out << _code << endl;
-	out << _ISBN << endl;
+	out << _ISFC << endl;
 	out << _price << endl;
 }
 
 Flight &Flight::operator=(const Flight &Flight)
 {
-	_maChuyenBay = Flight._maChuyenBay;
+	// _maChuyenBay = Flight._maChuyenBay;
 	_noiDen = Flight._noiDen;
 	_noiDi = Flight._noiDi;
 	_code = Flight._code;
-	_ISBN = Flight._ISBN;
+	_ISFC = Flight._ISFC;
 	_price = Flight._price;
 	return *this;
 }
 
 ostream &operator<<(ostream &os, const Flight &Flight)
 {
-	os << Flight._maChuyenBay << endl;
+	// os << Flight._maChuyenBay << endl;
 	os << Flight._noiDen << endl;
 	os << Flight._noiDi << endl;
 	os << Flight._code << endl;
-	os << Flight._ISBN << endl;
+	os << Flight._ISFC << endl;
 	os << Flight._price << endl;
 	return os;
 }

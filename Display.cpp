@@ -441,7 +441,7 @@ void Display::ControlBorrowBookOption()
 	cout << "======== MUA VE ========";
 	TextColor(7);
 	Airport aport;
-	aport.MuaVe();
+	aport.BuyTickets();
 	TextColor(12);
 	cout << "\n<== Nhan phim bat ky de tiep tuc ==>" << endl;
 	_getch();
@@ -457,7 +457,7 @@ void Display::ControlReturnBookOption()
 	cout << "======== HUY VE ========";
 	TextColor(7);
 	Airport aport;
-	aport.HuyVe();
+	aport.CancelTickets();
 	TextColor(12);
 	cout << "\n<== Nhan phim bat ky de tiep tuc ==>" << endl;
 	_getch();
