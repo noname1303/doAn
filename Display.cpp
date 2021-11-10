@@ -5,6 +5,7 @@
 
 using namespace srilakshmikanthanp;
 using namespace std;
+
 Figlet figlet(FigletFont::make("Fonts/Standard.flf"), Smushed::make());
 void gotoxy(int x, int y)
 {
@@ -121,9 +122,9 @@ void Display::ControlShowOption()
 				system("cls");
 				TextColor(9);
 				if (option == 0)
-					cout << "\n======= DANH SACH CHUYEN BAY =======";
+					cout << "\n======= DANH SACH MAY BAY =======";
 				else if (option == 1)
-					cout << "\n======= DANH SACH MAY BAY  =======";
+					cout << "\n======= DANH SACH NGUOI MUA  =======";
 				else
 					cout << "\n======= DANH SACH VE MAY BAY =======";
 				Airport aport;
@@ -152,7 +153,7 @@ int ReduceUpdateCode(const char *functionName)
 	TextColor(UPDATE_COLOR);
 	cout << "========== " << functionName << " ==========" << endl;
 	TextColor(10);
-	cout << "0 - CHUYEN BAY, 1 - MAY BAY, 2 - VE >> ";
+	cout << "0 - CHUYEN BAY, 1 - NGUOI MUA, 2 - VE >> ";
 	TextColor(7);
 	int type;
 	cin >> type;
@@ -279,7 +280,7 @@ void Display::SearchOptionMenu()
 	cout << "      Chuyen bay      ";
 
 	gotoxy(PIVOT_X + 1, TITLE_Y + 2 * STEP_Y);
-	cout << "     May mua   ";
+	cout << "     Nguoi mua   ";
 
 	gotoxy(PIVOT_X + 1, TITLE_Y + 3 * STEP_Y);
 	cout << " Ve ";
@@ -367,9 +368,9 @@ void Display::ControlSearchOption()
 					system("cls");
 					ShowConsoleCursor(true);
 					TextColor(UPDATE_COLOR);
-					cout << "========== TIM KIEM MAY BAY ==========" << endl;
+					cout << "========== TIM KIEM NGUOI MUA VE ==========" << endl;
 					TextColor(10);
-					cout << "Tim kiem bang (0 - Ho ten, 1 - CMND) >> ";
+					cout << "Tim kiem bang (0 - Noi den/noi di, 1 - Ma hieu) >> ";
 					TextColor(7);
 					int type;
 					cin >> type;
@@ -578,6 +579,88 @@ void Display::DisplayMain()
 				{
 					ControlReturnBookOption();
 					DisplayMain();
+					return;
+				}
+				break;
+				}
+			case 27:
+				SayGoodBye();
+			}
+			}
+			DisplayCursor(pre_move, move);
+		}
+	}
+}
+//=========dang nhap dang ky===========
+void Display::ShowLogin()
+{
+	system("cls");
+	Figlet figlet(FigletFont::make("Fonts/Standard.flf"), Smushed::make());
+	TextColor(TITLE_COLOR);
+	gotoxy(0, 0);
+	cout << figlet("Dang nhap / Dang ky");
+	TextColor(OPTION_COLOR);
+	gotoxy(PIVOT_X, TITLE_Y + 2 * STEP_Y);
+	cout << "  dang ky   ";
+	gotoxy(PIVOT_X, TITLE_Y + 3 * STEP_Y);
+	cout << "  dang nhap ";
+}
+void Display::MainLogin()
+{
+	Login app;
+	int option;
+	bool isLogin;
+	int move = 1;
+	int pre_move = 0;
+	ShowLogin();
+	ShowConsoleCursor(false);
+	DisplayCursor(pre_move, move);
+	while (1)
+	{
+		if (_kbhit())
+		{
+			char key = _getch();
+			if (key == -32)
+				key = _getch();
+			switch (key)
+			{
+			case 'w':
+			case 'W':
+			case 72:
+			{
+				if (move > 1)
+				{
+					pre_move = move;
+					--move;
+				}
+				break;
+			}
+			case 's':
+			case 'S':
+			case 80:
+			{
+				if (move < MAX_OPTION - 3)
+				{
+					pre_move = move;
+					++move;
+				}
+				break;
+			}
+			case 13:
+			{
+				option = move;
+				switch (option)
+				{
+				case 1:
+				{
+					app.dangKi();
+					MainLogin();
+					return;
+				}
+				case 2:
+				{
+					isLogin = app.dangNhap();
+					MainLogin();
 					return;
 				}
 				break;

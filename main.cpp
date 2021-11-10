@@ -22,34 +22,8 @@ int main()
 	try /// dung de bat cac ngoai le
 	{
 		createDataFile();
-
-		Login app;
-		int option;
-		bool isLogin;
-		system("cls");
-		Figlet figlet(FigletFont::make("Fonts/Standard.flf"), Smushed::make());
-		cout << figlet("Dang nhap / Dang ky");
-		cout << "Nhap lua chon" << endl;
-		cout << "1.Dang ky" << endl;
-		cout << "2.Dang nhap" << endl;
-		cin >> option;
-		switch (option)
-		{
-		case 1:
-		{
-			app.dangKi();
-			break;
-		}
-
-		case 2:
-		{
-			isLogin = app.dangNhap();
-			break;
-		}
-		}
-		TextColor(7);
-		system("pause");
-		return 0;
+		Display display;
+		display.MainLogin();
 	}
 	catch (const char *error) // chan bat và xử lí ngoại lệ
 	{

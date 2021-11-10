@@ -193,6 +193,10 @@ void Airport::Add(int option)
 		if (output.fail())
 			throw "Loi doc file";
 		BuyTicket *bt = new BuyTicket;
+		// int found = Search(1, 0);
+		// cout << found;
+		// if (found != NOT_FOUND)
+		// {
 		if (bt == NULL)
 			throw "Khong the cap phat bo nho";
 		fflush(stdin);
@@ -209,6 +213,12 @@ void Airport::Add(int option)
 			}
 		bt->OutputFile(output);
 		break;
+		// }
+		// else
+		// {
+		// 	cout << "\n========= KHONG TIM THAY TRONG DANH SACH  ==========" << endl;
+		// 	return;
+		// }
 	}
 	}
 	output.close();
@@ -240,6 +250,24 @@ void Airport::Delete(int option)
 	cout << "\n========= XOA THANH CONG ==========" << endl;
 	OutputDataToFile(option);
 }
+// void Airport::Delete(int option)
+// {
+// 	int found;
+// 	if (option == 0)
+// 		found = Search(option, 3);
+// 	else if (option == 1)
+// 		found = Search(option, 1);
+// 	else
+// 		found = Search(option, 0);
+// 	if (found == NOT_FOUND)
+// 	{
+// 		cout << "\n========= KHONG TIM THAY TRONG DANH SACH THU VIEN ==========" << endl;
+// 		return;
+// 	}
+// 	cout << "\n========= XOA THANH CONG ==========" << endl;
+// 	_as.erase(_as.begin() + found);
+// 	OutputDataToFile(option);
+// }
 
 int Airport::Search(int option, int type)
 {
@@ -255,12 +283,12 @@ int Airport::Search(int option, int type)
 		case 0:
 		{
 			//search by title
-			cout << "\nNhap ten maybay: ";
-			string title;
+			cout << "\nNhap ma chuyen bay: ";
+			string maChuyenBay;
 			cin.ignore();
-			getline(cin, title);
+			getline(cin, maChuyenBay);
 			for (int i = 0; i < _as.size(); ++i)
-				if (ToLower(((Flight *)_as[i])->GetMaChuyenBay()) == ToLower(title))
+				if (ToLower(((Flight *)_as[i])->GetMaChuyenBay()) == ToLower(maChuyenBay))
 					return i;
 			return NOT_FOUND;
 		}
@@ -307,6 +335,7 @@ int Airport::Search(int option, int type)
 		case 0:
 		{
 			//search by name
+
 			cout << "\nNhap loai may bay: ";
 			string name;
 			cin.ignore();
@@ -330,23 +359,30 @@ int Airport::Search(int option, int type)
 		}
 		}
 	}
-		// default:
+	default:
+	{
+		cout << "\nNhap ma hieu: ";
+		string ID;
+		cin.ignore();
+		getline(cin, ID);
+		for (int i = 0; i < _as.size(); ++i)
+			if (ToLower(((Plane *)_as[i])->GetMaHieu()) == ToLower(ID) && ID.length() != 9)
+				return i;
+		return NOT_FOUND;
+		// cout << "\nNhap ten (ID) nguoi mua ve: ";
+		// string name_ID;
+		// getline(cin, name_ID);
+		// for (int i = 0; i < _as.size(); ++i)
 		// {
-		// 	cout << "\nNhap ten (ID) nguoi mua ve: ";
-		// 	string name_ID;
-		// 	getline(cin, name_ID);
-		// 	for (int i = 0; i < _as.size(); ++i)
-		// 	{
-		// 		string r_name = ((BuyTicket *)_as[i])->GetPlane().GetName();
-		// 		string r_ID = ((BuyTicket *)_as[i])->GetPlane().GetID();
-		// 		if (ToLower(r_name) == ToLower(name_ID) || r_ID == name_ID )
-		// 			return i;
-		// 	}
-		// 	return NOT_FOUND;
+		// 	string r_name = ((BuyTicket *)_as[i])->GetPlane().GetLoaiMB();
+		// 	string r_ID = ((BuyTicket *)_as[i])->GetPlane().GetCodeMB();
+		// 	if (ToLower(r_name) == ToLower(name_ID) || r_ID == name_ID)
+		// 		return i;
 		// }
+		// return NOT_FOUND;
+	}
 	}
 }
-
 void Airport::Edit(int option)
 {
 	int found = Search(option, 0);

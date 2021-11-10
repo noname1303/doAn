@@ -25,6 +25,8 @@ void ShowConsoleCursor(bool flag);
 class Display
 {
 public:
+	void ShowLogin();
+	void MainLogin();
 	void DisplayCursor(int pre_move, int move);
 	void SayGoodBye();
 
