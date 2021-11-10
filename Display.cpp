@@ -121,9 +121,9 @@ void Display::ControlShowOption()
 				system("cls");
 				TextColor(9);
 				if (option == 0)
-					cout << "\n======= DANH SACH MAY BAY =======";
+					cout << "\n======= DANH SACH CHUYEN BAY =======";
 				else if (option == 1)
-					cout << "\n======= DANH SACH NGUOI MUA  =======";
+					cout << "\n======= DANH SACH MAY BAY  =======";
 				else
 					cout << "\n======= DANH SACH VE MAY BAY =======";
 				Airport aport;
@@ -152,7 +152,7 @@ int ReduceUpdateCode(const char *functionName)
 	TextColor(UPDATE_COLOR);
 	cout << "========== " << functionName << " ==========" << endl;
 	TextColor(10);
-	cout << "0 - CHUYEN BAY, 1 - NGUOI MUA, 2 - VE >> ";
+	cout << "0 - CHUYEN BAY, 1 - MAY BAY, 2 - VE >> ";
 	TextColor(7);
 	int type;
 	cin >> type;
@@ -279,7 +279,7 @@ void Display::SearchOptionMenu()
 	cout << "      Chuyen bay      ";
 
 	gotoxy(PIVOT_X + 1, TITLE_Y + 2 * STEP_Y);
-	cout << "     Nguoi mua   ";
+	cout << "     May mua   ";
 
 	gotoxy(PIVOT_X + 1, TITLE_Y + 3 * STEP_Y);
 	cout << " Ve ";
@@ -367,9 +367,9 @@ void Display::ControlSearchOption()
 					system("cls");
 					ShowConsoleCursor(true);
 					TextColor(UPDATE_COLOR);
-					cout << "========== TIM KIEM NGUOI MUA VE ==========" << endl;
+					cout << "========== TIM KIEM MAY BAY ==========" << endl;
 					TextColor(10);
-					cout << "Tim kiem bang (0 - Noi den/noi di, 1 - Ma hieu) >> ";
+					cout << "Tim kiem bang (0 - Ho ten, 1 - CMND) >> ";
 					TextColor(7);
 					int type;
 					cin >> type;

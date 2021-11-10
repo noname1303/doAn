@@ -11,7 +11,7 @@ void createDataFile()
 	ofstream dataFile;
 	dataFile.open(FLIGHT_DATA_PATH, ios::app);
 	dataFile.close();
-	dataFile.open(USERS_DATA_PATH, ios::app);
+	dataFile.open(PLANES_DATA_PATH, ios::app);
 	dataFile.close();
 	dataFile.open(TICKET_DATA_PATH, ios::app);
 	dataFile.close();
