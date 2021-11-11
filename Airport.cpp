@@ -163,12 +163,21 @@ void Airport::Add(int option)
 		AirportSystem *flight = new Flight;
 		if (flight == NULL)
 			throw "Khong the cap phat bo nho";
-		cin.ignore();
-		flight->Input();
-		if (!IsExist(option, flight))
-			flight->OutputFile(output);
+		int found = Search(1, 1);
+		if (found != NOT_FOUND)
+		{
+			cin.ignore();
+			flight->Input();
+			if (!IsExist(option, flight))
+				flight->OutputFile(output);
+			else
+				cout << "\n bay da ton tai trong database !";
+		}
 		else
-			cout << "\n bay da ton tai trong database !";
+		{
+			cout << "Khong trung khop!!!";
+			return;
+		}
 		break;
 	}
 	case 1:
@@ -193,8 +202,7 @@ void Airport::Add(int option)
 		if (output.fail())
 			throw "Loi doc file";
 		BuyTicket *bt = new BuyTicket;
-		int found = Search(1, 0);
-		cout << found;
+		int found = Search(0, 0);
 		if (found != NOT_FOUND)
 		{
 			if (bt == NULL)

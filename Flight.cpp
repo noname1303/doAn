@@ -136,7 +136,7 @@ void Flight::Input()
 {
 	while (1)
 	{
-		cout << "\nMa hieu may bay: ";
+		cout << "\nMa ma chuyen bay: ";
 		getline(cin, _maChuyenBay);
 		if (!IsEmpty(_maChuyenBay))
 			break;
