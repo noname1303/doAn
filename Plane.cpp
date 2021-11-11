@@ -1,5 +1,6 @@
 #include "Plane.h"
-
+#include <iomanip>
+#include <stdlib.h>
 Plane::Plane()
 {
 	_maHieu = "";
@@ -47,6 +48,10 @@ int Plane::GetSoGhe() const
 {
 	return _soGhe;
 }
+int Plane::GetVe() const
+{
+	return _soDay * _soGhe;
+}
 
 void Plane::SetMaHieu(const string &maHieu)
 {
@@ -77,7 +82,10 @@ void Plane::SetSoGhe(int soGhe)
 
 bool Plane::CheckCode(const string &Code)
 {
-
+	if (Code.length() != 6)
+	{
+		cerr << "\nCode phai co do dai la 6 !";
+	}
 	for (int i = 0; i < Code.length(); ++i)
 		if (Code[i] < '0' || Code[i] > '9')
 		{
@@ -86,13 +94,22 @@ bool Plane::CheckCode(const string &Code)
 		}
 	return true;
 }
+bool Plane::CheckMaMayBay(const string &maHieu)
+{
+	if (maHieu.length() != 5)
+	{
+		cerr << "\nMa hieu do do dai 5 ki tu!";
+		return false;
+	}
+	return true;
+}
 void Plane::Input()
 {
 	while (1)
 	{
 		cout << "\nNhap ma hieu may bay: ";
 		getline(cin, _maHieu);
-		if (!IsEmpty(_maHieu))
+		if (!IsEmpty(_maHieu) && CheckMaMayBay(_maHieu))
 			break;
 	}
 	while (1)
@@ -133,11 +150,17 @@ void Plane::Input()
 }
 void Plane::Output()
 {
-	cout << "\nMa hieu: " << _maHieu
-		 << "\tLoai: " << _loaiMB
-		 << "\tCode: " << _code
-		 << "\tSo day: " << _soDay
-		 << "\tSo Ghe: " << _soGhe;
+	cout << setiosflags(ios::left) << "\Ma hieu: " << setw(6) << _maHieu
+		 << "\tLoai: "
+		 << setw(15) << _loaiMB
+		 << "\tCode: "
+		 << setw(7) << _code
+		 << "\tSo day: "
+		 << setw(4) << _soDay
+		 << "\tSo Ghe: "
+		 << setw(4) << _soGhe
+		 << "\tSo ve:"
+		 << GetVe();
 }
 
 void Plane::InputFile(ifstream &input)

@@ -1,4 +1,5 @@
 #include "Flight.h"
+#include <iomanip>
 Flight::Flight()
 {
 	_maChuyenBay = "";
@@ -136,7 +137,7 @@ void Flight::Input()
 {
 	while (1)
 	{
-		cout << "\nMa ma chuyen bay: ";
+		cout << "\nNhap ma chuyen bay: ";
 		getline(cin, _maChuyenBay);
 		if (!IsEmpty(_maChuyenBay))
 			break;
@@ -188,12 +189,17 @@ void Flight::Input()
 }
 void Flight::Output()
 {
-	cout << "\nMa Chuyen Bay: " << _maChuyenBay;
-	cout << "\nNoi den: " << _noiDen;
-	cout << "\nNoi di: " << _noiDi;
-	cout << "\nCode: " << _code;
-	cout << "\nISFC: " << FormatISFC();
-	cout << "\nGia ve: " << setprecision(10) << _price;
+
+	cout << setiosflags(ios::left) << "Ma Chuyen Bay" << setw(6) << _maChuyenBay
+		 << "\tNoi den: "
+		 << setw(10) << _noiDen
+		 << "\tNoi di: "
+		 << setw(10) << _noiDi
+		 << "\Code: "
+		 << setw(4) << _code
+		 << "\tISFC: "
+		 << setw(10) << FormatISFC()
+		 << "\tGia ve: " << setw(15) << _price;
 }
 
 void Flight::InputFile(ifstream &input)

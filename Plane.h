@@ -23,6 +23,7 @@ public:
 	string GetCodeMB() const; // dung const vi` khong cho thay doi
 	int GetSoDay() const;
 	int GetSoGhe() const;
+	int GetVe() const;
 
 	void SetMaHieu(const string &name);
 	void SetLoaiMB(const string &name);
@@ -30,6 +31,7 @@ public:
 	void SetSoDay(int age);
 	void SetSoGhe(int soGhe);
 	static bool CheckCode(const string &code);
+	static bool CheckMaMayBay(const string &maHieu);
 	void Input();
 	void Output();
 

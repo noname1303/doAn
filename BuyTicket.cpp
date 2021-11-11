@@ -78,7 +78,28 @@ void BuyTicket::Input()
 	_Flight_list.resize(1);
 	cout << "\n==== Nhap thong tin ve ====";
 	_Flight_list[0].Input();
+	cout << "\n===== Nhap thong tin nguoi muon =====";
+	_planes.Input();
+	cout << "\n===== Nhap thong tin cac loai ve =====";
+	int n;
+	while (1)
+	{
+		cout << "\nNhap so luong ve : ";
+		cin >> n;
+		if (cin.fail())
+			throw "NaN - du lieu nhap phai la 1 so";
+		if (n > 0)
+			break;
+		cerr << "\nSo ve mua > 0";
+	}
 	cin.ignore();
+	_Flight_list.resize(n);
+	for (int i = 0; i < n; ++i)
+	{
+		cout << "\n==== Nhap thong tin ve thu " << i + 1 << " ====";
+		_Flight_list[i].Input();
+		cin.ignore();
+	}
 	while (1)
 	{
 		cout << "\nNgay mua (dd/mm/yyyy): ";
@@ -87,7 +108,8 @@ void BuyTicket::Input()
 			break;
 		cout << "\nNgay nhap khong hop le !";
 	}
-	_returned.push_back(0);
+	for (int i = 0; i < n; ++i)
+		_returned.push_back(n);
 }
 void BuyTicket::Output()
 {
@@ -99,17 +121,17 @@ void BuyTicket::Output()
 		cout << "\n========== Ve " << i + 1 << " ==========";
 		_Flight_list[i].Output();
 	}
-	// cout << "\n\n========== Thong tin Muon/Tra ==========" << endl;
-	// cout << "Ngay muon sach: " << _borrow_date;
-	// cout << "\nNgay tra sach: " << endl;
-	// for (int i = 0; i < _returned.size(); ++i)
-	// {
-	// 	cout << "-->Quyen " << i + 1 << ": ";
-	// 	if (!_returned[i])
-	// 		cout << "... (chua tra)" << endl;
-	// 	else
-	// 		cout << _Flight_return_date[i] << endl;
-	// }
+	cout << "\n\n========== Thong tin ngay mua ve ==========" << endl;
+	cout << "Ngay muon sach: " << _borrow_date;
+	cout << "\nNgay tra sach: " << endl;
+	for (int i = 0; i < _returned.size(); ++i)
+	{
+		cout << "-->Quyen " << i + 1 << ": ";
+		if (!_returned[i])
+			cout << "... (chua tra)" << endl;
+		else
+			cout << _Flight_return_date[i] << endl;
+	}
 }
 
 void BuyTicket::InputFile(ifstream &input)

@@ -39,8 +39,8 @@ public:
 	void SearchOptionMenu();
 	void ControlSearchOption();
 
-	void ControlBorrowBookOption();
-	void ControlReturnBookOption();
+	void ControlBuyTicketOption();
+	void ControlCancelTicketOption();
 
 	void ControlOverdueListOption();
 

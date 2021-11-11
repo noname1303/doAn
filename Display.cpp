@@ -39,7 +39,7 @@ void TextColor(int color)
 void Display::SayGoodBye()
 {
 	system("cls");
-	cout << figlet("Good bye");
+	cout << figlet("Hen gap lai");
 	system("pause");
 	exit(0);
 }
@@ -341,7 +341,7 @@ void Display::ControlSearchOption()
 					TextColor(UPDATE_COLOR);
 					cout << "========== TIM KIEM CHUYEN BAY ==========" << endl;
 					TextColor(10);
-					cout << "Tim kiem bang (0 - Ten may bay, 1 - Ma hieu, 2 - ISBN) >> ";
+					cout << "Tim kiem bang (0 - Ma chuyen bay, 1 - Code, 2 - ISFC) >> ";
 					TextColor(7);
 					int type;
 					cin >> type;
@@ -368,9 +368,9 @@ void Display::ControlSearchOption()
 					system("cls");
 					ShowConsoleCursor(true);
 					TextColor(UPDATE_COLOR);
-					cout << "========== TIM KIEM NGUOI MUA VE ==========" << endl;
+					cout << "========== TIM KIEM MAY BAY ==========" << endl;
 					TextColor(10);
-					cout << "Tim kiem bang (0 - Noi den/noi di, 1 - Ma hieu) >> ";
+					cout << "Tim kiem bang (0 - Loai may bay, 1 - Ma hieu) >> ";
 					TextColor(7);
 					int type;
 					cin >> type;
@@ -433,7 +433,7 @@ void Display::ControlSearchOption()
 }
 
 // ======== BORROW BOOKS OPTION ========= //
-void Display::ControlBorrowBookOption()
+void Display::ControlBuyTicketOption()
 {
 	system("cls");
 	gotoxy(TITLE_X - 2, TITLE_Y);
@@ -449,7 +449,7 @@ void Display::ControlBorrowBookOption()
 }
 
 // ======== RETURN BOOKS OPTION ========= //
-void Display::ControlReturnBookOption()
+void Display::ControlCancelTicketOption()
 {
 	system("cls");
 	gotoxy(TITLE_X - 2, TITLE_Y);
@@ -504,7 +504,7 @@ void Display::MainMenu()
 	cout << "  Huy Ve ";
 
 	TextColor(4);
-	cout << "<== Nhan ESC de thoat ==>";
+	cout << "\n<== Nhan ESC de thoat ==>";
 }
 void Display::DisplayMain()
 {
@@ -571,13 +571,13 @@ void Display::DisplayMain()
 				}
 				case 3:
 				{
-					ControlBorrowBookOption();
+					ControlBuyTicketOption();
 					DisplayMain();
 					return;
 				}
 				case 4:
 				{
-					ControlReturnBookOption();
+					ControlCancelTicketOption();
 					DisplayMain();
 					return;
 				}

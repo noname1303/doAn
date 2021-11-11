@@ -143,7 +143,7 @@ void Airport::Show(int option)
 	for (int i = 0; i < _as.size(); ++i)
 	{
 		TextColor(SHOW_COLOR);
-		cout << "\n========== STT " << i + 1 << " ==========";
+		cout << "\nSTT " << i + 1 << ": ";
 		TextColor(7);
 		_as[i]->Output();
 	}
@@ -198,34 +198,26 @@ void Airport::Add(int option)
 	}
 	default:
 	{
+
 		output.open(TICKET_DATA_PATH, ios::app);
 		if (output.fail())
 			throw "Loi doc file";
 		BuyTicket *bt = new BuyTicket;
-		int found = Search(0, 0);
-		if (found != NOT_FOUND)
-		{
-			if (bt == NULL)
-				throw "Khong the cap phat bo nho";
-			fflush(stdin);
-			bt->Input();
-			for (int i = 0; i < _as.size(); ++i)
-				if (((BuyTicket *)bt)->GetPlane().GetCodeMB() == ((BuyTicket *)_as[i])->GetPlane().GetCodeMB())
-				{
-					if (((BuyTicket *)bt)->GetPlane() == ((BuyTicket *)_as[i])->GetPlane())
-						bt->OutputFile(output);
-					else
-						cerr << "\n=== ERROR: Trung ID nhung khac thong tin ===" << endl;
-					output.close();
-					return;
-				}
-			bt->OutputFile(output);
-		}
-		else
-		{
-			cout << "\n========= KHONG TIM THAY TRONG DANH SACH  ==========" << endl;
-			return;
-		}
+		if (bt == NULL)
+			throw "Khong the cap phat bo nho";
+		fflush(stdin);
+		bt->Input();
+		for (int i = 0; i < _as.size(); ++i)
+			if (((BuyTicket *)bt)->GetPlane().GetCodeMB() == ((BuyTicket *)_as[i])->GetPlane().GetCodeMB())
+			{
+				if (((BuyTicket *)bt)->GetPlane() == ((BuyTicket *)_as[i])->GetPlane())
+					bt->OutputFile(output);
+				else
+					cerr << "\n=== ERROR: Trung ID nhung khac thong tin ===" << endl;
+				output.close();
+				return;
+			}
+		bt->OutputFile(output);
 		break;
 	}
 	}

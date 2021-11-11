@@ -13,7 +13,7 @@
 
 #define FLIGHT_DATA_PATH "flight.txt"
 #define PLANES_DATA_PATH "planes.txt"
-#define TICKET_DATA_PATH "ticket-bought.txt"
+#define TICKET_DATA_PATH "ticketBought.txt"
 #define NOT_FOUND -1
 #define FLIGHT_CODE_9 "VJA"
 #define _FLIGHT_CODE_9 "VNA"
