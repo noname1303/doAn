@@ -195,7 +195,7 @@ void Flight::Output()
 		 << setw(10) << _noiDen
 		 << "\tNoi di: "
 		 << setw(10) << _noiDi
-		 << "\Code: "
+		 << "\tCode: "
 		 << setw(4) << _code
 		 << "\tISFC: "
 		 << setw(10) << FormatISFC()

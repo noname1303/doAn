@@ -150,7 +150,7 @@ void Plane::Input()
 }
 void Plane::Output()
 {
-	cout << setiosflags(ios::left) << "\Ma hieu: " << setw(6) << _maHieu
+	cout << setiosflags(ios::left) << "\nMa hieu: " << setw(6) << _maHieu
 		 << "\tLoai: "
 		 << setw(15) << _loaiMB
 		 << "\tCode: "
