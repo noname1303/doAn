@@ -1,0 +1,21 @@
+{
+  "files.associations": {
+    "iostream": "cpp",
+    "new": "cpp",
+    "*.tcc": "cpp",
+    "iomanip": "cpp",
+    "ostream": "cpp",
+    "typeinfo": "cpp",
+    "iosfwd": "cpp",
+    "fstream": "cpp",
+    "cfloat": "cpp",
+    "array": "cpp",
+    "string_view": "cpp",
+    "initializer_list": "cpp",
+    "ranges": "cpp",
+    "utility": "cpp"
+  },
+  "code-runner.executorMap": {
+    "cpp": "cd $dir && g++ -std=c++14 *.cpp  -o $fileNameWithoutExt && $dir$fileNameWithoutExt",
+}
+}
